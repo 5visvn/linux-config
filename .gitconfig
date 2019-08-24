@@ -1,0 +1,18 @@
+[user]
+	email = wisan@vip.qq.com
+	name = wisan
+[alias]
+    pl = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    st = status
+    br = branch
+    ol = log --online
+    ck = checkout
+[color]
+	ui = true 
+	branch = true
+	diff = true
+	interactive = true
+	status = true
+[core]
+	editor = vim
+	diff = vimdiff
