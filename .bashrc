@@ -13,5 +13,6 @@ fi
 # User specific aliases and functions
 . ~/.aliasrc
 . ~/.pathrc
+. ~/.bashrc-default
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
