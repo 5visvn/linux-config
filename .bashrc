@@ -1,18 +1,17 @@
-. ~/.bashrc_bak
 # .bashrc
-source ~/tools/color.sh
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
+	source /etc/bashrc
 fi
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
 
 # User specific aliases and functions
-. ~/.aliasrc
-. ~/.pathrc
-. ~/.bashrc-default
+source ~/.aliasrc
+source ~/.pathrc
+source ~/.bashrc-default
+source ~/tools/color.sh
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
