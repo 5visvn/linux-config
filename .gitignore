@@ -1,0 +1,8 @@
+.emacs.d/
+.space-vim/
+.ssh/
+.fzf/
+.config/
+.cache/
+.bashrc_bak
+.local

@@ -1,0 +1,1 @@
+/home/pi/.space-vim/init.vim
