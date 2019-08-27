@@ -12,6 +12,6 @@ fi
 source ~/.aliasrc
 source ~/.pathrc
 source ~/.bashrc-default
-source ~/.color_promot
+source ~/.colorshellrc
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
