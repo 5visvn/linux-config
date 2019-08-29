@@ -16,7 +16,7 @@ alias uml='~/tools/uml.sh'
 
 
 # cd
-alias cpp='cd ~/develop/c++'
+alias cpp='cd ~/develop/cpp-test'
 alias unreal='cd ~/develop/unrealEngine-release'
 
 # git alias
