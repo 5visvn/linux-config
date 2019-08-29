@@ -637,6 +637,9 @@ before packages are loaded."
   ;; no backup file
   ;; (setq-default make-backup-files nil)
 
+  ;; term mode maximum buffer size
+  (setq term-buffer-maximum-size 0)
+
   ;; zone
   ;; (setq zone-programs [zone-pgm-whack-chars])
   ;; (setq zone-programs [zone-pgm-putz-with-case])
