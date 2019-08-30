@@ -1,11 +1,12 @@
+#! /bin/bash
+# tools
 alias emc='pkill emacsclient ; emacsclient -t -a=""'
 alias emcn='emacsclient -t -a=""'
 alias emcc='emacsclient -c -a="" &'
 alias emcs='emacs -nw --daemon'
-alias global='~/tools/global/bin/global'
+# alias global='~/tools/global/bin/global'
 alias download='aria2c'
 alias sb='source ~/.bashrc'
-alias ll='ls -lhtr'
 alias bashvi='vim ~/.bashrc'
 alias g++='g++ -std=c++11'
 alias tsk='~/tools/termshark'
@@ -14,7 +15,9 @@ alias uml='~/tools/uml.sh'
 
 # alias makeemacs='./configure --prefix=/home/wws/tools/emc27 --with-x-toolkit=no --with-pop=no --with-mailutils --with-jpeg=ifavailable'
 
-
+# linux commands shotcut
+alias logout="ps -ef | rg $USER | rg \"\\-bash\" | awk '{system(\"kill -9 \"\$2)}'"
+alias ll='ls -lhtr'
 # cd
 alias cpp='cd ~/develop/cpp-test'
 alias unreal='cd ~/develop/unrealEngine-release'
@@ -31,3 +34,4 @@ alias gd='git diff'
 alias gds='git diff --staged'
 alias gdt='git difftool'
 alias gdts='git difftool --staged'
+
