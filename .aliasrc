@@ -17,6 +17,7 @@ alias uml='~/tools/uml.sh'
 
 # linux commands shotcut
 alias logout="ps -ef | rg $USER | rg \"\\-bash\" | awk '{system(\"kill -9 \"\$2)}'"
+#alias pkill="kill_my_process() { ps -ef | rg $USER | rg \"$*\" | awk '{system(\"kill -9 \"\$2)}'; }; " 
 alias ll='ls -lhtr'
 # cd
 alias cpp='cd ~/develop/cpp-test'

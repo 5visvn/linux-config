@@ -1,7 +1,3 @@
-;;(require 'bind-key)
-;;(bind-key* "C-h" (kbd "<backspace>"))
-;; (bind-key* "C-?" 'help-command)
-
 ;; -*- mode: emacs-lisp -*-
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
