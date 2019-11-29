@@ -37,3 +37,6 @@ alias gds='git diff --staged'
 alias gdt='git difftool'
 alias gdts='git difftool --staged'
 
+
+# servers
+alias co='ssh wws@47.98.133.22'

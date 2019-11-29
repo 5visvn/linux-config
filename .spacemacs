@@ -636,6 +636,7 @@ before packages are loaded."
   ;; term mode maximum buffer size
   (setq term-buffer-maximum-size 0)
 
+  (set-background-color 'black)
   ;; zone
   ;; (setq zone-programs [zone-pgm-whack-chars])
   ;; (setq zone-programs [zone-pgm-putz-with-case])
