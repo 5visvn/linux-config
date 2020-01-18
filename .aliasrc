@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 # tools
 alias emc='pkill emacsclient ; emacsclient -t -a=""'
 alias emcn='emacsclient -t -a=""'
@@ -12,6 +12,7 @@ alias g++='g++ -std=c++11'
 alias tsk='~/tools/termshark'
 # alias uml='java -jar ~/tools/plantuml.jar'
 alias uml='~/tools/uml.sh'
+alias tmx='tmux attach -t 0'
 
 # alias makeemacs='./configure --prefix=/home/wws/tools/emc27 --with-x-toolkit=no --with-pop=no --with-mailutils --with-jpeg=ifavailable'
 
