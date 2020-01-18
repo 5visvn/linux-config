@@ -33,7 +33,8 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(;; d
+   '(vimscript
+     ;; d
      ;; systemd
      yaml
      groovy
@@ -636,7 +637,7 @@ before packages are loaded."
   ;; term mode maximum buffer size
   (setq term-buffer-maximum-size 0)
 
-  (set-background-color 'black)
+  (setq set-background-color 'black)
   ;; zone
   ;; (setq zone-programs [zone-pgm-whack-chars])
   ;; (setq zone-programs [zone-pgm-putz-with-case])
@@ -964,7 +965,7 @@ This function is called at the very end of Spacemacs initialization."
  '(linum-format " %7i ")
  '(package-selected-packages
    (quote
-    (slime plantuml-mode gcmh web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc groovy-mode company-tern tern coffee-mode yapfify yaml-mode ws-butler winum which-key wgrep uuidgen use-package unfill toc-org smex smartparens restart-emacs request ranger rainbow-delimiters pyvenv pytest pyenv-mode py-isort pip-requirements persp-mode pcre2el paradox spinner org-pomodoro alert log4e gntp org-mime open-junk-file mwim move-text macrostep live-py-mode linum-relative link-hint ivy-hydra indent-guide hydra lv hy-mode dash-functional hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indent-guides helm-rtags rtags helm helm-core helm-make google-translate golden-ratio go-guru go-eldoc gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ fringe-helper git-gutter+ ggtags fuzzy flycheck-pos-tip flycheck flx fill-column-indicator expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-matchit evil-magit magit transient git-commit with-editor evil-iedit-state iedit evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu eshell-up elisp-slime-nav dumb-jump disaster diminish diff-hl cython-mode counsel-projectile projectile pkg-info epl counsel swiper ivy company-statistics company-quickhelp pos-tip company-go go-mode company-c-headers company-anaconda company column-enforce-mode cmake-mode bind-map bind-key better-shell auto-yasnippet yasnippet auto-shell-command popwin deferred auto-highlight-symbol auto-complete popup auto-compile packed async anaconda-mode pythonic f dash s aggressive-indent adaptive-wrap ace-window ace-link avy 2048-game monokai-theme)))
+    (dracula-theme slime plantuml-mode gcmh web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc groovy-mode company-tern tern coffee-mode yapfify yaml-mode ws-butler winum which-key wgrep uuidgen use-package unfill toc-org smex smartparens restart-emacs request ranger rainbow-delimiters pyvenv pytest pyenv-mode py-isort pip-requirements persp-mode pcre2el paradox spinner org-pomodoro alert log4e gntp org-mime open-junk-file mwim move-text macrostep live-py-mode linum-relative link-hint ivy-hydra indent-guide hydra lv hy-mode dash-functional hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indent-guides helm-rtags rtags helm helm-core helm-make google-translate golden-ratio go-guru go-eldoc gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ fringe-helper git-gutter+ ggtags fuzzy flycheck-pos-tip flycheck flx fill-column-indicator expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-matchit evil-magit magit transient git-commit with-editor evil-iedit-state iedit evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu eshell-up elisp-slime-nav dumb-jump disaster diminish diff-hl cython-mode counsel-projectile projectile pkg-info epl counsel swiper ivy company-statistics company-quickhelp pos-tip company-go go-mode company-c-headers company-anaconda company column-enforce-mode cmake-mode bind-map bind-key better-shell auto-yasnippet yasnippet auto-shell-command popwin deferred auto-highlight-symbol auto-complete popup auto-compile packed async anaconda-mode pythonic f dash s aggressive-indent adaptive-wrap ace-window ace-link avy 2048-game monokai-theme)))
  '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#262626"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
