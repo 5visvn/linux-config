@@ -12,7 +12,7 @@ alias g++='g++ -std=c++11'
 alias tsk='~/tools/termshark'
 # alias uml='java -jar ~/tools/plantuml.jar'
 alias uml='~/tools/uml.sh'
-alias tm='tmux attach -t 0'
+alias tm='tmux attach -t 0 || tmux'
 
 # alias makeemacs='./configure --prefix=/home/wws/tools/emc27 --with-x-toolkit=no --with-pop=no --with-mailutils --with-jpeg=ifavailable'
 
