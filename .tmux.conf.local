@@ -13,6 +13,19 @@
 # then uncomment the following line to make Meta + arrow keys mapping work
 #set -ga terminal-overrides "*:kUP3=\e[1;9A,*:kDN3=\e[1;9B,*:kRIT3=\e[1;9C,*:kLFT3=\e[1;9D"
 
+# keys
+# C-q d    exit tmux with keep workspace
+# C-q ,    command mode
+# C-q :join-pane -t <window-name>      join pane to other window
+# C-q                                  common prefix
+# C-q x                                kill-pane
+# C-q &                                kill-window
+# C-q :kill-session
+# C-q :kill-server
+# C-q <SPC>                            relayout panes
+# C-q w                                window list
+# C-q c                                new window
+# C-q :new -s <session-name>           new session
 
 # -- windows & pane creation ---------------------------------------------------
 
