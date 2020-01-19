@@ -504,6 +504,8 @@ It should only modify the values of Spacemacs settings."
    ;; (default nil)
    dotspacemacs-enable-server t
 
+   dotspacemacs-server-socket-dir "~/.emacs.d/server"
+
    ;; If non-nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
    dotspacemacs-persistent-server t
