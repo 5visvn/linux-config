@@ -13,6 +13,7 @@ alias tsk='~/tools/termshark'
 # alias uml='java -jar ~/tools/plantuml.jar'
 alias uml='~/tools/uml.sh'
 alias tm='tmux attach -t 0 || tmux'
+alias st='~/tools/st/st'
 
 # alias makeemacs='./configure --prefix=/home/wws/tools/emc27 --with-x-toolkit=no --with-pop=no --with-mailutils --with-jpeg=ifavailable'
 
