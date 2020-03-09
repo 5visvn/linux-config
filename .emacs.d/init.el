@@ -49,10 +49,7 @@
         (server-start)))))
 
 
-
-
-
-
 (require 'bind-key)
 (bind-key* "C-h" (kbd "<backspace>"))
 (bind-key* "C-?" 'help-command)
+
