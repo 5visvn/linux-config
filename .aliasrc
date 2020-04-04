@@ -1,7 +1,7 @@
 #!/bin/bash
 # tools
 alias emc='pkill emacsclient ; emacsclient -t --socket-name ~/.emacs.d/server/server -a=""'
-alias emcn='emacsclient -t -a=""'
+alias emcn='emacsclient -t --socket-name ~/.emacs.d/server/server -a=""'
 alias emcc='emacsclient -c -a="" &'
 alias emcs='emacs -nw --daemon'
 # alias global='~/tools/global/bin/global'
@@ -15,12 +15,13 @@ alias uml='~/tools/uml.sh'
 alias tm='tmux attach -t 0 || tmux'
 alias st='~/tools/st/st'
 
-# alias makeemacs='./configure --prefix=/home/wws/tools/emc27 --with-x-toolkit=no --with-pop=no --with-mailutils --with-jpeg=ifavailable'
+# alias makeemacs='./configure --prefix=/home/wws/tools/emc27 --with-x-toolkit=no --with-pop=no --with-mailutils --with-jpeg=ifavailable --with-modules --with-gnutls=ifavailable --without-x'
 
 # linux commands shotcut
 alias logout="ps -ef | rg $USER | rg \"\\-bash\" | awk '{system(\"kill -9 \"\$2)}'"
 #alias pkill="kill_my_process() { ps -ef | rg $USER | rg \"$*\" | awk '{system(\"kill -9 \"\$2)}'; }; " 
 alias ll='ls -lhtr'
+alias rm='rm -I'
 # cd
 alias cpp='cd ~/develop/cpp-test'
 alias unreal='cd ~/develop/unrealEngine-release'
