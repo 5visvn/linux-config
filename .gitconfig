@@ -6,6 +6,8 @@
     st = status
     br = branch
     ol = log --online
+    lo = log --oneline
+    lf = log --first-parent
     ck = checkout
 [color]
 	ui = true 
@@ -16,3 +18,9 @@
 [core]
 	editor = vim
 	diff = vimdiff
+[stash]
+  showPatch = true
+[rebase]
+  autostash = true
+[log]
+  decorate = full
