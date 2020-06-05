@@ -8,3 +8,10 @@
 .local
 tools/
 develop/
+.bash_logout
+.profile
+.bash_history
+.viminfo
+.sudo_as_admin_successful
+.landscape
+.motd_shown
