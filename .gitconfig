@@ -18,6 +18,7 @@
 [core]
 	editor = emacs -Q
 	diff = vimdiff
+	excludesfile = ~/.gituntrack
 [stash]
   showPatch = true
 [rebase]
