@@ -37,7 +37,7 @@ This function should only modify configuration layer settings."
      ;; d
      ;; systemd
      yaml
-     groovy
+     ;; groovy
      go
      (go :variables go-backend 'lsp)
      ;; html
@@ -49,7 +49,7 @@ This function should only modify configuration layer settings."
      ;; ----------------------------------------------------------------
      (c-c++ :variables
             ;; c-c++-enable-clang-support t
-            ;; c-c++-backend 'lsp-cquery
+            c-c++-backend 'company-tabnine
             c-c++-enable-rtags-support t
             c-c++-enable-google-style t
             c-c++-enable-google-newline t
@@ -82,7 +82,7 @@ This function should only modify configuration layer settings."
      gtags
      ;; helm
      ivy
-     lsp
+     ;; lsp
      better-defaults
      emacs-lisp
      git
@@ -103,15 +103,16 @@ This function should only modify configuration layer settings."
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages '(
+                                      company-tabnine
                                       highlight-indent-guides
                                       ;; nerdtab
                                       ;; cmake-font-lock
                                       2048-game
-                                      better-shell
-                                      auto-shell-command
-                                      eshell-up
+                                      ;; better-shell
+                                      ;; auto-shell-command
+                                      ;; eshell-up
                                       helm-rtags
-                                      groovy-mode
+                                      ;; groovy-mode
                                       pcap-mode
                                       slime
                                       )
@@ -792,44 +793,51 @@ before packages are loaded."
   ;;   :config
   ;;   (global-set-key (kbd "C-c M-b") #'nerdtab-minor-mode))
 
+  ;; (add-to-list 'company-backends #'company-tabnine)
+
+
+  ;; (define-key evil-window-map "\C-s" 'swiper-region-or-symbol)
+  ;; (define-key evil-normal-state-map "\C-s" 'swiper-region-or-symbol)
+  ;; (define-key evil-insert-state-map "\C-s" 'swiper-region-or-symbol)
+  ;; (define-key evil-motion-state-map "\C-s" 'swiper-region-or-symbol)
+  (global-set-key (kbd "C-s") 'spacemacs/swiper-region-or-symbol)
+
+
+  ;; TabNine for code auto complete
+  (add-to-list 'company-backends #'company-tabnine)
+
+
   )
 
-;; zone-choose package
-  (defun zone-choose (pgm)
-    "Choose a PGM to run for `zone'."
-    (interactive
-    (list
-      (completing-read
-      "Program: "
-      (mapcar 'symbol-name zone-programs))))
-    (let ((zone-programs (list (intern pgm))))
-      (zone)))
+;; out of spacemacs user-config
 
 ;; plant-uml
 (defun plantuml-preview-text ();(plantuml-jar-path uml-code output)
   "output text"
-   ;; (shell-command ("echo " uml-code " | java -jar" plantuml-jar-path "-tutxt -p | cat") output)
+  ;; (shell-command ("echo " uml-code " | java -jar" plantuml-jar-path "-tutxt -p | cat") output)
   ;; (let ((cmd ('"echo  \"@startuml\n a->b:hi \n @enduml \"| java -jar ~/tools/plantuml.jar -tutxt -p | cat"))
   ;;       (output "")
   ;;       ))
   ;; (shell-command  cmd output)
   ;; (let ((packet-number (pcap-mode--packet-number-from-tshark-list)))
-    (let ((cmd (pcap-mode--get-tshark-command (buffer-file-name)
-                                              (format "%s frame.number==%s"
-                                                      pcap-mode-tshark-single-packet-filter
-                                                      packet-number)))
-          (temp-buffer-name (format "*Packet <%s from %s>*" packet-number
-                                    (buffer-file-name))))
-      (get-buffer-create temp-buffer-name)
-      (add-to-list 'pcap-mode--pcap-packet-cleanup-list temp-buffer-name)
-      (let ((message-log-max nil))
-        (shell-command cmd temp-buffer-name))
-      (switch-to-buffer-other-window temp-buffer-name)
-      (special-mode))
+  (let ((cmd (pcap-mode--get-tshark-command (buffer-file-name)
+                                            (format "%s frame.number==%s"
+                                                    pcap-mode-tshark-single-packet-filter
+                                                    packet-number)))
+        (temp-buffer-name (format "*Packet <%s from %s>*" packet-number
+                                  (buffer-file-name))))
+    (get-buffer-create temp-buffer-name)
+    (add-to-list 'pcap-mode--pcap-packet-cleanup-list temp-buffer-name)
+    (let ((message-log-max nil))
+      (shell-command cmd temp-buffer-name))
+    (switch-to-buffer-other-window temp-buffer-name)
+    (special-mode))
   )
 (defvar plantuml-jar-path "~/tools/plantuml.jar" "file links to jar")
 (defvar umlcode "@startuml\n a->b:hi \n @enduml" "test")
 (global-set-key [?\C-x ?c] 'plantuml-preview-text)
+
+
 
 
 
@@ -970,7 +978,7 @@ This function is called at the very end of Spacemacs initialization."
  '(linum-format " %7i ")
  '(package-selected-packages
    (quote
-    (counsel-codesearch vterm dracula-theme slime plantuml-mode gcmh web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc groovy-mode company-tern tern coffee-mode yapfify yaml-mode ws-butler winum which-key wgrep uuidgen use-package unfill toc-org smex smartparens restart-emacs request ranger rainbow-delimiters pyvenv pytest pyenv-mode py-isort pip-requirements persp-mode pcre2el paradox spinner org-pomodoro alert log4e gntp org-mime open-junk-file mwim move-text macrostep live-py-mode linum-relative link-hint ivy-hydra indent-guide hydra lv hy-mode dash-functional hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indent-guides helm-rtags rtags helm helm-core helm-make google-translate golden-ratio go-guru go-eldoc gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ fringe-helper git-gutter+ ggtags fuzzy flycheck-pos-tip flycheck flx fill-column-indicator expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-matchit evil-magit magit transient git-commit with-editor evil-iedit-state iedit evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu eshell-up elisp-slime-nav dumb-jump disaster diminish diff-hl cython-mode counsel-projectile projectile pkg-info epl counsel swiper ivy company-statistics company-quickhelp pos-tip company-go go-mode company-c-headers company-anaconda company column-enforce-mode cmake-mode bind-map bind-key better-shell auto-yasnippet yasnippet auto-shell-command popwin deferred auto-highlight-symbol auto-complete popup auto-compile packed async anaconda-mode pythonic f dash s aggressive-indent adaptive-wrap ace-window ace-link avy 2048-game monokai-theme)))
+    (lsp-ui lsp-python-ms dap-mode lsp-treemacs bui cquery company-lsp ccls lsp-mode markdown-mode slime plantuml-mode simple-httpd js2-mode helm-core evil-unimpaired f s dash)))
  '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#262626"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
