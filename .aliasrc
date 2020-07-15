@@ -1,9 +1,12 @@
 #!/bin/bash
 # tools
-alias emc='pkill emacsclient ; emacsclient -t --socket-name ~/.emacs.d/server/server -a=""'
-alias emcn='emacsclient -t --socket-name ~/.emacs.d/server/server -a=""'
-alias emcc='emacsclient -c -a="" &'
+#alias emc='pkill emacsclient ; emacsclient -t --socket-name ~/.emacs.d/server/server -a=""'
+alias emct='pkill emacsclient ; emacsclient -t  -a=""'
+alias emcn='emacsclient -t  -a=""'
+# --socket-name ~/.emacs.d/server/server'
+alias emc='emacsclient -c -a="" &'
 alias emcs='emacs -nw --daemon'
+alias doom='$HOME/.emacs.d/bin/doom'
 # alias global='~/tools/global/bin/global'
 alias download='aria2c'
 alias sb='source ~/.bashrc'

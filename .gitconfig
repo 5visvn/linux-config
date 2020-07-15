@@ -16,7 +16,7 @@
 	interactive = true
 	status = true
 [core]
-	editor = vim
+	editor = zile
 	diff = vimdiff
 [stash]
   showPatch = true
