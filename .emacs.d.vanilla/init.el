@@ -1,11 +1,11 @@
-;; (setq package-archives '(("gnu" 64/  . "http://elpa.emacs-china.org/gnu/")
-;; 			 ("melpa" . "http://elpa.emacs-china.org/melpa/")))
-;; (setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-;;                          ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa-stable/")
-;; 			 ("org" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")))
+;; special for swiper need download from elpa
+(unless (package-installed-p 'swiper)
+  (package-install 'swiper))
+
 ;; (add-to-list 'package-archives '("melpa" . "http://elpa.emacs-china.org/melpa/"))
 (add-to-list 'package-archives '("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/"))
-
+(package-initialize)
+;;(package-refresh-contents)
 
 ;; packages not in elpa
 (add-to-list 'load-path (expand-file-name "~/elisp/nox"))
@@ -16,25 +16,22 @@
 (setq package-list '(ivy
 ;;		     ws-bulter
 		     winum
-		     org-pretty-tags
 		     save-visited-files
 		     eshell-up
 		     company
-		     treemacs
+		     ;; treemacs
  		     bbyac
-		     swiper
 		     which-key
 		     rime
 		     projectile
+                     plantuml-mode
 		     undo-fu
 		     use-package
 		     undo-fu-session
 		     hungry-delete
 		     ivy-avy
-		     avy
-		     ;;;--- github
-		     ;;nox
-		     ;;;--- end of github
+		     ws-butler
+                     avy
 		     yasnippet
 		     ;;;; cpp
 		     with-editor
@@ -45,32 +42,39 @@
 		     modern-cpp-font-lock
 		     opencl-mode
 		     ;;;; end of cpp
+                     ;; org
+                     org-bullets
+		     org-pretty-tags
+                     ;; end of org
 		     smex
 		     git-timemachine
 		     magit
 		     counsel
 		     auto-highlight-symbol
+                     goto-last-change
 		     monokai-theme))
 
-;; ; install the missing packages
-(dolist (package package-list)
-  (unless (package-installed-p package)
-    (package-install package)))
+;;; install the missing packages
+(let ((need-refresh t))
+  (dolist (package package-list)
+    (unless (package-installed-p package)
+      (package-install package)
+      (progn
+        (package-refresh-contents)
+        (setf need-refresh nil)
+        (package-install package)))))
 
-
-
-
-
-;; theme
-;; (require 'monokai-theme)
-;; (load-theme 'monokai)
+;; TODO: download github packages automatically
+(setq github-package-list '((nox . "lazycat")
+                            ))
 
 
 ;;;;;------------------------------ Keybindings----------------------------
 
 ;; key-bindings for editing
 (require 'hungry-delete)
-(global-set-key (kbd "C-h") 'backward-delete-char-untabify)
+(global-set-key (kbd "C-h") 'hungry-delete-backward)
+;; (global-set-key (kbd "C-h") 'backward-delete-char-untabify)
 (global-set-key (kbd "M-h") 'backward-kill-word)
 ;;(global-set-key (kbd "C-d") 'hungry-delete-forward)
 (global-set-key (kbd "M-k") 'kill-whole-line)
@@ -90,27 +94,14 @@
 			      (beginning-of-line)
 			      (open-line 1)))
 (global-set-key (kbd "C-c l") 'comment-line)
+(global-set-key (kbd "C-c C-l") 'comment-line)
+(global-set-key (kbd "C-x a a") 'align-regexp)
 
 ;; key-bindings for jumping
 (require 'avy)
 (global-set-key (kbd "M-'") 'avy-goto-line)
-(global-set-key (kbd "M-c") 'avy-goto-char)
-(require 'nox)
-(dolist (hook (list
-               ;; 'js-mode-hook
-               ;; 'rust-mode-hook
-               ;; 'python-mode-hook
-               ;; 'ruby-mode-hook
-               ;; 'java-mode-hook
-               ;; 'sh-mode-hook
-               ;; 'php-mode-hook
-               'c-mode-common-hook
-               'c-mode-hook
-               ;; 'csharp-mode-hook
-               'c++-mode-hook
-               ;; 'haskell-mode-hook
-               ))
-  (add-hook hook '(lambda () (nox-ensure))))
+(global-set-key (kbd "M-c") 'avy-goto-char-2)
+(global-set-key (kbd "M-C") 'avy-goto-char)
 ;; (require 'better-jumper)
 (global-set-key (kbd "C-.") 'xref-find-references)
 (global-set-key (kbd "M-[ 1 ; 5 n") 'xref-find-references)
@@ -119,18 +110,23 @@
 (global-set-key (kbd "M-] ]") 'end-of-defun)
 (global-set-key (kbd "M-[ M-[") 'beginning-of-defun)
 (global-set-key (kbd "M-] M-]") 'end-of-defun)
-(global-set-key (kbd "C-z") 'hs-hide-block)
+(global-set-key (kbd "C-z") 'origami-toggle-node)
+(require 'goto-last-change)
+(global-set-key (kbd "C-c /") 'goto-last-change)
 ;; (require 'better-jumper)
 ;; (better-jumper-mode 1)
 ;; (global-set-key (kbd "M-n") 'better-jumper-jump-forward)
 ;; (global-set-key (kbd "M-p") 'better-jumper-jump-backward)
 
+;; ivy
+(require 'ivy)
+(ivy-mode)
 
 ;; key-bindings for search
-(require 'swiper)
-(global-set-key (kbd "C-s") 'swiper-isearch-thing-at-point)
+(require 'swiper) ;; notes: if complie error, check swiper should be installed from gnu.org
+(global-set-key (kbd "C-s") 'swiper-thing-at-point)
 (global-set-key (kbd "M-s s") 'counsel-projectile-rg)
-(global-set-key (kbd "M-s M-s") 'counsel-projectile-rg-thing-at-point)
+(global-set-key (kbd "M-s M-s") 'swiper-all-thing-at-point);; 'counsel-projectile-rg-thing-at-point)
 
 ;; key-bindings for file
 (global-set-key (kbd "M-z") 'switch-to-buffer)
@@ -161,8 +157,24 @@
 (global-set-key (kbd "C-x C-o") 'other-window)
 (global-set-key (kbd "C-r") 'ivy-resume)
 
+;; magit
+(require 'magit)
+(global-set-key (kbd "M-g f") 'magit-pull)
+(global-set-key (kbd "M-g p") 'magit-push)
+(global-set-key (kbd "M-g d") 'magit-diff)
+(global-set-key (kbd "M-g s") 'magit-status)
+(global-set-key (kbd "M-g l") 'magit-log)
+(global-set-key (kbd "M-g m") 'smerge-keep-mine)
+(global-set-key (kbd "M-g o") 'smerge-keep-other)
+
+
 
 ;;;;;------------------------------ UI ----------------------------
+
+;; monokai-theme black background
+(require 'monokai-alt-theme)
+(require 'monokai-theme)
+(setq monokai-background "#000000")
 
 ;; Disable startup screen
 (setq inhibit-splash-screen 1)
@@ -179,17 +191,43 @@
 (setq visible-bell  t)
 
 ;; minibuffer resize
-(ivy-mode t)
 (setq resize-mini-windows t)
 (setq max-mini-window-height 4)
 
 ;; display time
-(display-time-mode 1)
-
-;; scroll-bar
-(scroll-bar-mode -1)
+;; (display-time-mode 1)
 
 ;; TODO: mode-line
+(setq-default mode-line-format
+              '(
+                "%e"
+                ;; mode-line-front-space
+                ;; Standard info about the current buffer
+                ;; mode-line-mule-info
+                ;; mode-line-client
+                mode-line-modified
+                "  "
+                ;; mode-line-remote
+                ;; mode-line-frame-idejtification
+                mode-line-buffer-identification
+                "\t  "
+                mode-line-position
+                ;; Some specific information about the current buffer:
+                ;; lunaryorn-projectile-mode-line ; Project information
+                ;; (vc-mode lunaryorn-vc-mode-line)   VC information
+                ;; (flycheck-mode flycheck-mode-line) ; Flycheck status
+                ;; (multiple-cursors-mode mc/mode-line) ; Number of cursors
+                ;; Misc information, notably battery state and function name
+                "\t  "
+                mode-line-misc-info
+                "\t  "
+                (vc-mode vc-mode)
+                ;; And the modes, which I don't really care for anyway
+                ;; " "
+                ;; mode-line-modes
+                ;; mode-line-end-spaces
+                ))
+
 
 
 (setq show-trailing-whitespace t)
@@ -201,29 +239,30 @@
 (menu-bar-mode -1)
 ;; show tabs and trailing whitespace
 (setq whitespace-style '(face trailing tabs tab-mark))
+(global-hl-line-mode t)
 
 (setq make-backup-files nil)
-(setq mark-ring-max 100)
-
+(setq mark-ring-max 6)
+(setq global-mark-ring-max 6)
 
 ;; enable mouse in terminal
 (xterm-mouse-mode)
 ;; mouse scroll with wsl-terminal
 (global-set-key [mouse-4] (lambda ()
                             (interactive)
-                            (scroll-down-line 6)
+                            (scroll-down-line 10)
                             ))
 (global-set-key [mouse-5] (lambda ()
                             (interactive)
-                            (scroll-up-line 6)
+                            (scroll-up-line 10)
                             ))
 (global-set-key [C-mouse-4] (lambda ()
                             (interactive)
-                            (scroll-down-line 15)
+                            (scroll-down-line 20)
                             ))
 (global-set-key [C-mouse-5] (lambda ()
                             (interactive)
-                            (scroll-up-line 15)
+                            (scroll-up-line 20)
                             ))
 
 
@@ -241,17 +280,35 @@
 (require 'auto-highlight-symbol)
 (global-auto-highlight-symbol-mode t)
 
+;; disable auto save
+(setq auto-save-default nil)
+
+;; recenter
+(setq recenter-positions '(middle top bottom))
 
 (require 'nox)
-(setq nox-python-server-dir "/home/zwxeiwu/tools/python-language-server/bin")
-(setq nox-python-server "pyls")
+;; (setq nox-python-server-dir "/home/zwxeiwu/tools/python-language-server/bin")
+;; (setq nox-python-server "pyls")
+
 ;; add exec-path for running command
 ;; todo use home directory, home directory is quiet slow, maybe the reason is GOROOT
 ;; (add-to-list 'exec-path "/home/zwxeiwu/tools/go-language-server/bin")
-(add-to-list 'exec-path "/tmp/zwxeiwu/sapc_go/bin")
-
-(add-to-list 'nox-server-programs '((c++-mode c-mode) . ("clangd")))
+;; (add-to-list 'exec-path "/tmp/zwxeiwu/sapc_go/bin")
 ;; (add-to-list 'nox-server-programs '((go-mode) . ("/home/zwxeiwu/tools/go-language-server/bin/gopls")))
+
+;; plantuml
+(require 'plantuml-mode)
+(setq org-plantuml-jar-path (expand-file-name "~/tools/plantuml.jar"))
+(setq plantuml-jar-path (expand-file-name "~/tools/plantuml.jar"))
+(setq plantuml-default-exec-mode 'jar)
+;; (plantuml-set-output-type 'png)
+(add-hook 'plantuml-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c C-c") 'plantuml-preview-current-block)))
+
+
+(add-to-list 'exec-path "/tmp/zwxeiwu/tools/clang+llvm-10.0.0-x86_64-linux-sles11.3/bin/")
+(add-to-list 'nox-server-programs '((c++-mode c-mode) . ("clangd")))
 (dolist (hook (list
                ;; 'js-mode-hook
                ;; 'python-mode-hook
@@ -269,10 +326,11 @@
 
 
 ;;; org-mode customize
+;; image can be resize on view
 (setq org-image-actual-width nil)
+;; org source code indentation
+(setq org-src-tab-acts-natively t)
 
-(setq default-tab-width 3)
-(setq tab-width 3)
 (setq c-default-style "ellemtel" c-basic-offset 3)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
@@ -285,14 +343,16 @@
 (global-auto-highlight-symbol-mode 1)
 
 ;; tag file
-;; (setq tags-file-name "/tmp/zwxeiwu/esapc/gtags")
-
+(setq tags-file-name "/tmp/zwxeiwu/esapc/gtags")
 
 ;; find other file for hh and cc
 (setq cc-search-directories '("."
 			      ".."
 			      "./mobile"
-			      "./sessionhandler"))
+                              "../incl"
+                              "../src"
+			      "./sessionhandler"
+                              ))
 
 ;; projectile use ivy
 (setq projectile-completion-system 'ivy)
@@ -300,20 +360,21 @@
 ;; auto revert when file changed in disk
 (global-auto-revert-mode 1)
 
+;; hide-show collapse code block
+(global-origami-mode 1)
 
 ;;(add-hook 'minibuffer-setup-hook
                          ;;(lambda () (setq truncate-lines nil)))
 
 
-;;; org-mode customize
-(setq org-image-actual-width nil)
+;; (follow-mode) ;; for read in two screens, it can scroll screens together
 
 ;;;; company
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 (global-company-mode t)
 (setq company-idle-delay 0
-   company-minimum-prefix-length 2
+   company-minimum-prefix-length 1
    company-require-match nil
    company-dabbrev-ignore-case t
    company-show-numbers 'left
@@ -337,15 +398,25 @@
 ;; remove '^' in M-x
 (setq ivy-initial-inputs-alist nil)
 
-
+;; rime
+;; (require 'rime)
 
 ;; eshell
+(defalias 'open 'find-file)
+(defun eshell/emacs (file)
+  (find-file file))
+(setenv "TOOL_DIR" "/tmp/zwxeiwu/tools/")
+(setenv "TMP_DIR" "/tmp/zwxeiwu/")
+(setenv "LS_OPTIONS" "-N --color=tty -T 0") ;; TODO: seems not work
+;; eshell alias solution 1
+;; add following line in  the end of .bashrc to create alais file for eshell
+;; alias | sed -E "s/^alias ([^=]+)='(.*)'$/alias \1 \2 \$*/g; s/'\\\''/'/g;" >~/.emacs.d/eshell/alias
 
 ;; save
 ;; (require 'save-visited-files)
 ;; (save-visited-files-mode t)
 ;; (require 'saveplace)
-;; (save-place-mode t)
+(save-place-mode t)
 
 ;;
 
@@ -358,7 +429,7 @@
 ;; use .proectile for generating projectile
 ;; (setq projectile-indexing-method 'native)
 
-
+;; display line number
 ;;(global-display-line-numbers-mode t)
 
 ;; which-key
@@ -375,13 +446,15 @@
 
 
 
+;; auto complete pair for () {} [] "" ...
+(electric-pair-mode 1)
 ;; abbrev
 (require 'abbrev)
 (define-abbrev-table 'global-abbrev-table
   '(
-    ("db" "TRACE_DEBUG(\"---zwxeiwu--:[ ]\");")
-    ("dx" "TRACE_DEBUG_EX(\"---zwxeiwu----: [\"<< <<\"]\");")
-    ("td" "// TODO: zwxeiwu")
+    ("db" "TRACE_DEBUG(\"zwxeiwu: [s]\");")
+    ("dx" "TRACE_DEBUG_EX(\"zwxeiwu: s[\"<< v <<\"]\");")
+    ("td" "// TODO: zwxeiwu: ")
     ))
 (abbrev-mode 1)
 ;; (use-package abbrev
@@ -402,16 +475,6 @@
 ;;   )
 
 
-
-
-
-
-;; ivy
-(require 'ivy)
-(ivy-mode)
-
-;; avy
-(require 'avy)
 ;; avy goto char mode mark to a specific char
 (defun avy-action-mark-to-char (pt)
   "Mark sexp at PT."
@@ -466,9 +529,12 @@ Version 2017-09-01"
 (defun counsel-projectile-rg-thing-at-point ()
   (interactive)
   ;; (counsel-projectile-rg (thing-at-point 'symbol))
-  (setq-local thing (symbol-at-point))
-  (counsel-projectile-rg)
-)
+  (let ((thing (thing-at-point 'symbol)))
+    (progn
+      (counsel-projectile-rg)
+      ))
+  (kill-ring-save 0 0 (ivy-thing-at-point))
+  )
 
 
 
@@ -482,12 +548,18 @@ Version 2017-09-01"
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(monokai))
  '(custom-safe-themes
-   '("f3ab34b145c3b2a0f3a570ddff8fabb92dafc7679ac19444c31058ac305275e1" default))
- '(face-font-family-alternatives
-   '(("Source Code Pro" "fixed")
-     ("helv" "helvetica" "arial" "fixed")))
+   '("0231f20341414f4091fc8ea36f28fa1447a4bc62923565af83cfb89a6a1e7d4a" "46b2d7d5ab1ee639f81bde99fcd69eb6b53c09f7e54051a591288650c29135b0" "f3ab34b145c3b2a0f3a570ddff8fabb92dafc7679ac19444c31058ac305275e1" default))
+ '(global-display-line-numbers-mode nil)
+ '(monokai-background "#000000")
+ '(org-babel-load-languages
+   '((plantuml . t)
+     (latex . t)
+     (shell . t)
+     (emacs-lisp . t)
+     (lisp . t)
+     (C . t)))
  '(package-selected-packages
-   '(go-mode yaml-imenu yaml-mode better-jumper folding bind-key cuda-mode demangle-mode disaster modern-cpp-font-lock opencl-mode go smex projectile-ripgrep counsel use-package counsel-projectile swiper ivy-xref imenus magit git-timemachine fzf yasnippet undo-fu-session undo-fu rime which-key bbyac avy monokai-theme hungry-delete ivy))
+   '(org-bullets disaster electric-operator auto-complete w3m goto-last-change goto-last-point magit-gerrit origami monokai-alt-theme counsel-gtags all-the-icons-ivy all-the-icons liberime imenu-list ivy-avy treemacs eshell-up save-visited-files org-pretty-tags go-mode yaml-imenu yaml-mode better-jumper folding bind-key cuda-mode demangle-mode modern-cpp-font-lock opencl-mode go smex projectile-ripgrep counsel use-package counsel-projectile swiper ivy-xref imenus magit git-timemachine fzf yasnippet undo-fu-session undo-fu rime which-key bbyac avy monokai-theme hungry-delete ivy))
  '(show-trailing-whitespace t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -495,3 +567,5 @@ Version 2017-09-01"
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(set-background-color "black")
