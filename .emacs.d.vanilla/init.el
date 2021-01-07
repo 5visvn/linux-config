@@ -12,7 +12,6 @@
 ;; package list
 (setq package-list '(swiper
                      ivy
-;;		     ws-bulter
 		     winum
 		     save-visited-files
 		     eshell-up

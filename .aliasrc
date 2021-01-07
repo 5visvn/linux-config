@@ -19,6 +19,7 @@ alias tm='tmux attach -t 0 || tmux'
 alias st='~/tools/st/st'
 
 # alias makeemacs='./configure --prefix=/home/wws/tools/emc27 --with-x-toolkit=no --with-pop=no --with-mailutils --with-jpeg=ifavailable --without-makeinfo --with-modules --with-gnutls=ifavailable --without-x'
+# alias build-x-emacs='./configure --with-xpm=ifavailable --with-jpeg=ifavailable --with-gif=ifavailable --with-tiff=ifavailable --with-x-toolkit=lucid'
 
 # linux commands shotcut
 alias logout="ps -ef | rg $USER | rg \"\\-bash\" | awk '{system(\"kill -9 \"\$2)}'"
