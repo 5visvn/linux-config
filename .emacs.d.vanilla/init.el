@@ -1,11 +1,8 @@
-;; special for swiper need download from elpa
-(unless (package-installed-p 'swiper)
-  (package-install 'swiper))
-
-;; (add-to-list 'package-archives '("melpa" . "http://elpa.emacs-china.org/melpa/"))
-(add-to-list 'package-archives '("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/"))
 (package-initialize)
-;;(package-refresh-contents)
+(setq package-archives '(("gnu" . "http://mirrors.ustc.edu.cn/elpa/gnu/")
+                         ("melpa" . "http://mirrors.ustc.edu.cn/elpa/melpa/")
+                         ("melpa-stable" . "http://mirrors.ustc.edu.cn/elpa/melpa-stable/")
+                         ("org" . "http://mirrors.ustc.edu.cn/elpa/org/")))
 
 ;; packages not in elpa
 (add-to-list 'load-path (expand-file-name "~/elisp/nox"))
@@ -13,7 +10,8 @@
 ;; (add-to-list 'exec-path (expand-file-name "~/tools/xxx/bin"))
 
 ;; package list
-(setq package-list '(ivy
+(setq package-list '(swiper
+                     ivy
 ;;		     ws-bulter
 		     winum
 		     save-visited-files
@@ -30,6 +28,7 @@
 		     undo-fu-session
 		     hungry-delete
 		     ivy-avy
+                     origami
 		     ws-butler
                      avy
 		     yasnippet
@@ -52,17 +51,20 @@
 		     counsel
 		     auto-highlight-symbol
                      goto-last-change
-		     monokai-theme))
+		     monokai-theme
+		     monokai-alt-theme))
 
 ;;; install the missing packages
 (let ((need-refresh t))
   (dolist (package package-list)
     (unless (package-installed-p package)
-      (package-install package)
-      (progn
-        (package-refresh-contents)
-        (setf need-refresh nil)
-        (package-install package)))))
+      (if need-refresh
+	  (progn
+            (package-refresh-contents)
+            (setf need-refresh nil)
+            (package-install package))
+	(package-install package)))))
+
 
 ;; TODO: download github packages automatically
 (setq github-package-list '((nox . "lazycat")
@@ -195,7 +197,25 @@
 (setq max-mini-window-height 4)
 
 ;; display time
-;; (display-time-mode 1)
+(display-time-mode 1)
+
+;; scroll bar
+(scroll-bar-mode -1)
+
+(setq show-trailing-whitespace t)
+(setq-default indent-tabs-mode nil)
+(setq default-tab-width 3)
+(setq tab-width 3)
+(setq c-default-style "ellemtel" c-basic-offset 3)
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+;; show tabs and trailing whitespace
+(setq whitespace-style '(face trailing tabs tab-mark))
+(global-hl-line-mode t)
+
+(setq make-backup-files nil)
+(setq mark-ring-max 6)
+(setq global-mark-ring-max 6)
 
 ;; TODO: mode-line
 (setq-default mode-line-format
@@ -229,24 +249,9 @@
                 ))
 
 
-
-(setq show-trailing-whitespace t)
-(setq-default indent-tabs-mode nil)
-(setq default-tab-width 3)
-(setq tab-width 3)
-(setq c-default-style "ellemtel" c-basic-offset 3)
-(tool-bar-mode -1)
-(menu-bar-mode -1)
-;; show tabs and trailing whitespace
-(setq whitespace-style '(face trailing tabs tab-mark))
-(global-hl-line-mode t)
-
-(setq make-backup-files nil)
-(setq mark-ring-max 6)
-(setq global-mark-ring-max 6)
-
 ;; enable mouse in terminal
 (xterm-mouse-mode)
+
 ;; mouse scroll with wsl-terminal
 (global-set-key [mouse-4] (lambda ()
                             (interactive)
@@ -332,18 +337,13 @@
 (setq org-src-tab-acts-natively t)
 
 (setq c-default-style "ellemtel" c-basic-offset 3)
-(tool-bar-mode -1)
-(menu-bar-mode -1)
-
-(setq make-backup-files nil)
-(setq mark-ring-max 100)
 
 ;; auto highlight
 (require 'auto-highlight-symbol)
 (global-auto-highlight-symbol-mode 1)
 
 ;; tag file
-(setq tags-file-name "/tmp/zwxeiwu/esapc/gtags")
+;;(setq tags-file-name "/tmp/zwxeiwu/esapc/gtags")
 
 ;; find other file for hh and cc
 (setq cc-search-directories '("."
@@ -351,7 +351,6 @@
 			      "./mobile"
                               "../incl"
                               "../src"
-			      "./sessionhandler"
                               ))
 
 ;; projectile use ivy
