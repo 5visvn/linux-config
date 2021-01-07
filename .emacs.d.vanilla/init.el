@@ -72,7 +72,7 @@
 
 ;;;;;------------------------------ Keybindings----------------------------
 
-;; key-bindings for editing
+;; key-bindings for editing -------------------------------
 (require 'hungry-delete)
 (global-set-key (kbd "C-h") 'hungry-delete-backward)
 ;; (global-set-key (kbd "C-h") 'backward-delete-char-untabify)
@@ -98,7 +98,7 @@
 (global-set-key (kbd "C-c C-l") 'comment-line)
 (global-set-key (kbd "C-x a a") 'align-regexp)
 
-;; key-bindings for jumping
+;; key-bindings for jumping -------------------------------
 (require 'avy)
 (global-set-key (kbd "M-'") 'avy-goto-line)
 (global-set-key (kbd "M-c") 'avy-goto-char-2)
@@ -123,15 +123,15 @@
 (require 'ivy)
 (ivy-mode)
 
-;; key-bindings for search
+;; key-bindings for search -------------------------------
 (require 'swiper) ;; notes: if complie error, check swiper should be installed from gnu.org
 (global-set-key (kbd "C-s") 'swiper-thing-at-point)
 (global-set-key (kbd "M-s s") 'counsel-projectile-rg)
 (global-set-key (kbd "M-s M-s") 'swiper-all-thing-at-point);; 'counsel-projectile-rg-thing-at-point)
 
-;; key-bindings for file
+;; key-bindings for file -------------------------------
 (global-set-key (kbd "M-z") 'switch-to-buffer)
-(global-set-key (kbd "C-c b") 'switch-to-buffer)
+;; (global-set-key (kbd "C-c b") 'switch-to-buffer)
 (global-set-key (kbd "C-c C-f") 'find-file)
 (require 'projectile)
 (global-set-key (kbd "M-p f") 'projectile--find-file)
@@ -146,7 +146,7 @@
 
 
 
-;; key-bindings for window
+;; key-bindings for window -------------------------------
 (require 'winum)
 (winum-mode)
 (global-set-key (kbd "M-1") 'winum-select-window-1)
@@ -158,7 +158,7 @@
 (global-set-key (kbd "C-x C-o") 'other-window)
 (global-set-key (kbd "C-r") 'ivy-resume)
 
-;; magit
+;; key-bindings for magit -------------------------------
 (require 'magit)
 (global-set-key (kbd "M-g f") 'magit-pull)
 (global-set-key (kbd "M-g p") 'magit-push)
@@ -169,6 +169,10 @@
 (global-set-key (kbd "M-g o") 'smerge-keep-other)
 
 
+;; key-bindings for term -------------------------------
+(add-hook 'term-mode-hook
+  (lambda ()
+    (define-key term-raw-map (kbd "M-z") 'switch-to-buffer)))
 
 ;;;;;------------------------------ UI ----------------------------
 
