@@ -12,57 +12,57 @@
 ;; package list
 (setq package-list '(swiper
                      ivy
-		     winum
-		     save-visited-files
-		     eshell-up
-		     company
-		     ;; treemacs
- 		     bbyac
-		     which-key
-		     rime
-		     projectile
+                     winum
+                     save-visited-files
+                     eshell-up
+                     company
+                     ;; treemacs
+                     bbyac
+                     which-key
+                     rime
+                     projectile
                      plantuml-mode
-		     undo-fu
-		     use-package
-		     undo-fu-session
-		     hungry-delete
-		     ivy-avy
+                     undo-fu
+                     use-package
+                     undo-fu-session
+                     hungry-delete
+                     ivy-avy
                      origami
-		     ws-butler
+                     ws-butler
                      avy
-		     yasnippet
-		     ;;;; cpp
-		     with-editor
-		     cuda-mode
-		     imenu-list
-		     demangle-mode
-		     disaster
-		     modern-cpp-font-lock
-		     opencl-mode
-		     ;;;; end of cpp
+                     yasnippet
+                     ;;;; cpp
+                     with-editor
+                     cuda-mode
+                     imenu-list
+                     demangle-mode
+                     disaster
+                     modern-cpp-font-lock
+                     opencl-mode
+                     ;;;; end of cpp
                      ;; org
                      org-bullets
-		     org-pretty-tags
+                     org-pretty-tags
                      ;; end of org
-		     smex
-		     git-timemachine
-		     magit
-		     counsel
-		     auto-highlight-symbol
+                     smex
+                     git-timemachine
+                     magit
+                     counsel
+                     auto-highlight-symbol
                      goto-last-change
-		     monokai-theme
-		     monokai-alt-theme))
+                     monokai-theme
+                     monokai-alt-theme))
 
 ;;; install the missing packages
 (let ((need-refresh t))
   (dolist (package package-list)
     (unless (package-installed-p package)
       (if need-refresh
-	  (progn
+          (progn
             (package-refresh-contents)
             (setf need-refresh nil)
             (package-install package))
-	(package-install package)))))
+        (package-install package)))))
 
 
 ;; TODO: download github packages automatically
@@ -87,13 +87,13 @@
 (require 'undo-fu)
 (global-set-key (kbd "C-u") 'undo-fu-only-redo)
 (global-set-key (kbd "M-j") (lambda()
-			      (interactive)
-			      (end-of-line)
-			      (newline-and-indent)))
+                              (interactive)
+                              (end-of-line)
+                              (newline-and-indent)))
 (global-set-key (kbd "M-o") (lambda()
-			      (interactive)
-			      (beginning-of-line)
-			      (open-line 1)))
+                              (interactive)
+                              (beginning-of-line)
+                              (open-line 1)))
 (global-set-key (kbd "C-c l") 'comment-line)
 (global-set-key (kbd "C-c C-l") 'comment-line)
 (global-set-key (kbd "C-x a a") 'align-regexp)
@@ -311,6 +311,7 @@
 
 ;; plantuml
 (require 'plantuml-mode)
+(add-to-list 'auto-mode-alist '("\\.uml\\'" . plantuml-mode)) ;; auto enable plantuml-mode for .uml files
 (setq org-plantuml-jar-path (expand-file-name "~/tools/plantuml.jar"))
 (setq plantuml-jar-path (expand-file-name "~/tools/plantuml.jar"))
 (setq plantuml-default-exec-mode 'jar)
@@ -343,6 +344,9 @@
 (setq org-image-actual-width nil)
 ;; org source code indentation
 (setq org-src-tab-acts-natively t)
+(add-hook 'org-mode-hook
+          (lambda ()
+            (org-bullets-mode 1)))
 
 (setq c-default-style "ellemtel" c-basic-offset 3)
 
@@ -351,8 +355,8 @@
 
 ;; find other file for hh and cc
 (setq cc-search-directories '("."
-			      ".."
-			      "./mobile"
+                              ".."
+                              "./mobile"
                               "../incl"
                               "../src"
                               ))
