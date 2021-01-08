@@ -16,7 +16,7 @@
 	interactive = true
 	status = true
 [core]
-	editor = emacs -Q -nw
+	editor = vim
 	diff = vimdiff
 	excludesfile = ~/.gituntrack
 [stash]

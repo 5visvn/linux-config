@@ -171,8 +171,10 @@
 
 ;; key-bindings for term -------------------------------
 (add-hook 'term-mode-hook
-  (lambda ()
-    (define-key term-raw-map (kbd "M-z") 'switch-to-buffer)))
+          (lambda ()
+            (setq show-trailing-whitespace nil)
+            (define-key term-raw-map (kbd "M-z") 'switch-to-buffer)
+            (define-key term-raw-map (kbd "M-x") 'counsel-M-x)))
 
 ;;;;;------------------------------ UI ----------------------------
 
@@ -180,6 +182,9 @@
 (require 'monokai-alt-theme)
 (require 'monokai-theme)
 (setq monokai-background "#000000")
+
+(add-to-list 'default-frame-alist '(font . "Source Code Pro" ))
+(set-face-attribute 'default t :font "Source Code Pro" )
 
 ;; Disable startup screen
 (setq inhibit-splash-screen 1)
@@ -309,7 +314,7 @@
 (setq org-plantuml-jar-path (expand-file-name "~/tools/plantuml.jar"))
 (setq plantuml-jar-path (expand-file-name "~/tools/plantuml.jar"))
 (setq plantuml-default-exec-mode 'jar)
-;; (plantuml-set-output-type 'png)
+(plantuml-set-output-type 'png)
 (add-hook 'plantuml-mode-hook
           (lambda ()
             (local-set-key (kbd "C-c C-c") 'plantuml-preview-current-block)))
@@ -341,10 +346,6 @@
 
 (setq c-default-style "ellemtel" c-basic-offset 3)
 
-;; auto highlight
-(require 'auto-highlight-symbol)
-(global-auto-highlight-symbol-mode 1)
-
 ;; tag file
 ;;(setq tags-file-name "/tmp/zwxeiwu/esapc/gtags")
 
@@ -370,6 +371,11 @@
 
 
 ;; (follow-mode) ;; for read in two screens, it can scroll screens together
+(require 'follow-mode)
+(add-hook 'follow-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-v") 'follow-scroll-up)
+            (local-set-key (kbd "M-v") 'follow-scroll-down)))
 
 ;;;; company
 (require 'company)
@@ -432,7 +438,7 @@
 ;; (setq projectile-indexing-method 'native)
 
 ;; display line number
-;;(global-display-line-numbers-mode t)
+(global-display-line-numbers-mode -1)
 
 ;; which-key
 ;; set which key delay
@@ -551,7 +557,6 @@ Version 2017-09-01"
  '(custom-enabled-themes '(monokai))
  '(custom-safe-themes
    '("0231f20341414f4091fc8ea36f28fa1447a4bc62923565af83cfb89a6a1e7d4a" "46b2d7d5ab1ee639f81bde99fcd69eb6b53c09f7e54051a591288650c29135b0" "f3ab34b145c3b2a0f3a570ddff8fabb92dafc7679ac19444c31058ac305275e1" default))
- '(global-display-line-numbers-mode nil)
  '(monokai-background "#000000")
  '(org-babel-load-languages
    '((plantuml . t)
