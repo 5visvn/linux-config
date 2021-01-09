@@ -28,6 +28,7 @@
                      hungry-delete
                      ivy-avy
                      origami
+                     hl-todo
                      ws-butler
                      avy
                      yasnippet
@@ -178,10 +179,7 @@
 
 ;;;;;------------------------------ UI ----------------------------
 
-;; monokai-theme black background
-(require 'monokai-alt-theme)
-(require 'monokai-theme)
-(setq monokai-background "#000000")
+(hl-todo-mode 1)
 
 (add-to-list 'default-frame-alist '(font . "Source Code Pro" ))
 (set-face-attribute 'default t :font "Source Code Pro" )
@@ -375,7 +373,7 @@
 
 
 ;; (follow-mode) ;; for read in two screens, it can scroll screens together
-(require 'follow-mode)
+(require 'follow)
 (add-hook 'follow-mode-hook
           (lambda ()
             (local-set-key (kbd "C-v") 'follow-scroll-up)
@@ -414,7 +412,8 @@
 ;; (require 'rime)
 
 ;; eshell
-(defalias 'open 'find-file)
+(defalias 'vim 'find-file)
+(defalias 'vi 'find-file)
 (defun eshell/emacs (file)
   (find-file file))
 (setenv "TOOL_DIR" "/tmp/zwxeiwu/tools/")
