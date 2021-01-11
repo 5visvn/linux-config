@@ -179,7 +179,7 @@
 
 ;;;;;------------------------------ UI ----------------------------
 
-(hl-todo-mode 1)
+(global-hl-todo-mode 1)
 
 (add-to-list 'default-frame-alist '(font . "Source Code Pro" ))
 (set-face-attribute 'default t :font "Source Code Pro" )
