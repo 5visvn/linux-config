@@ -412,6 +412,9 @@
 ;; (require 'rime)
 
 ;; eshell
+(add-hook 'eshell-mode-hook
+          (lambda ()
+            (company-mode -1)))
 (defalias 'vim 'find-file)
 (defalias 'vi 'find-file)
 (defun eshell/emacs (file)
