@@ -175,7 +175,6 @@
           (lambda ()
             (setq show-trailing-whitespace nil)
             (define-key term-raw-map (kbd "M-z") 'switch-to-buffer)
-            (define-key term-raw-map (kbd "C-x C-f") 'find-file)
             (define-key term-raw-map (kbd "M-x") 'counsel-M-x)))
 
 ;;;;;------------------------------ UI ----------------------------
@@ -299,14 +298,14 @@
 (setq recenter-positions '(middle top bottom))
 
 (require 'nox)
-;; (setq nox-python-server-dir "/home/zwxeiwu/tools/python-language-server/bin")
+;; (setq nox-python-server-dir (concat "/home/" user-login-name "/tools/python-language-server/bin"))
 ;; (setq nox-python-server "pyls")
 
 ;; add exec-path for running command
 ;; todo use home directory, home directory is quiet slow, maybe the reason is GOROOT
-;; (add-to-list 'exec-path "/home/zwxeiwu/tools/go-language-server/bin")
-;; (add-to-list 'exec-path "/tmp/zwxeiwu/sapc_go/bin")
-;; (add-to-list 'nox-server-programs '((go-mode) . ("/home/zwxeiwu/tools/go-language-server/bin/gopls")))
+;; (add-to-list 'exec-path (concat "/home/" user-login-name "/tools/go-language-server/bin"))
+;; (add-to-list 'exec-path (concat "/tmp/" user-login-name "/sapc_go/bin"))
+;; (add-to-list 'nox-server-programs '((go-mode) . ((concat "/home/" user-login-name "/tools/go-language-server/bin/gopls"))))
 
 ;; plantuml
 (require 'plantuml-mode)
@@ -320,7 +319,7 @@
             (local-set-key (kbd "C-c C-c") 'plantuml-preview-current-block)))
 
 
-(add-to-list 'exec-path "/tmp/zwxeiwu/tools/clang+llvm-10.0.0-x86_64-linux-sles11.3/bin/")
+(add-to-list 'exec-path (concat "/tmp/" user-login-name "/tools/clang+llvm-10.0.0-x86_64-linux-sles11.3/bin/"))
 (add-to-list 'nox-server-programs '((c++-mode c-mode) . ("clangd")))
 (dolist (hook (list
                ;; 'js-mode-hook
@@ -350,7 +349,7 @@
 (setq c-default-style "ellemtel" c-basic-offset 3)
 
 ;; tag file
-;;(setq tags-file-name "/tmp/zwxeiwu/esapc/gtags")
+;;(setq tags-file-name (concat "/tmp/" user-login-name "/esapc/gtags"))
 
 ;; find other file for hh and cc
 (setq cc-search-directories '("."
@@ -416,12 +415,16 @@
 (add-hook 'eshell-mode-hook
           (lambda ()
             (company-mode -1)))
-(defalias 'vim 'find-file)
-(defalias 'vi 'find-file)
+;; mapping eshell editors to emacs
 (defun eshell/emacs (file)
   (find-file file))
-(setenv "TOOL_DIR" "/tmp/zwxeiwu/tools/")
-(setenv "TMP_DIR" "/tmp/zwxeiwu/")
+(defun eshell/vim (file)
+  (find-file file))
+(defun eshell/vi (file)
+  (find-file file))
+
+(setenv "TOOL_DIR" (concat "/tmp/" user-login-name "/tools/")
+(setenv "TMP_DIR" (concat "/tmp/" user-login-name "/"))
 (setenv "LS_OPTIONS" "-N --color=tty -T 0") ;; TODO: seems not work
 ;; eshell alias solution 1
 ;; add following line in  the end of .bashrc to create alais file for eshell
@@ -439,7 +442,6 @@
 (require 'projectile)
 (projectile-mode 1)
 ;; project root
-(setq projectile-project-root "/tmp/zwxeiwu/esapc/")
 (setq projectile-enable-caching t)
 ;; use .proectile for generating projectile
 ;; (setq projectile-indexing-method 'native)
@@ -466,11 +468,13 @@
 ;; abbrev
 (require 'abbrev)
 (define-abbrev-table 'global-abbrev-table
-  '(
-    ("db" "TRACE_DEBUG(\"zwxeiwu: [s]\");")
-    ("dx" "TRACE_DEBUG_EX(\"zwxeiwu: s[\"<< v <<\"]\");")
-    ("td" "// TODO: zwxeiwu: ")
+  `(
+   ("db" ,(concat "TRACE_DEBUG(\"" user-login-name ": [s]\");"))
+    ("dx" ,(concat "TRACE_DEBUG_EX(\"" user-login-name ": s[\"<< v <<\"]\");"))
+    ("td" ,(concat "// TODO: " user-login-name ": "))
     ))
+
+
 (abbrev-mode 1)
 ;; (use-package abbrev
 ;;   :ensure t
