@@ -423,7 +423,7 @@
 (defun eshell/vi (file)
   (find-file file))
 
-(setenv "TOOL_DIR" (concat "/tmp/" user-login-name "/tools/")
+(setenv "TOOL_DIR" (concat "/tmp/" user-login-name "/tools/"))
 (setenv "TMP_DIR" (concat "/tmp/" user-login-name "/"))
 (setenv "LS_OPTIONS" "-N --color=tty -T 0") ;; TODO: seems not work
 ;; eshell alias solution 1
@@ -587,3 +587,4 @@ Version 2017-09-01"
  )
 
 (set-background-color "black")
+
