@@ -29,7 +29,6 @@ alias rm='rm -I'
 # cd
 alias cpp='cd ~/develop/cpp-test'
 alias unreal='cd ~/develop/unrealEngine-release'
-alias lisp='cd ~/develop/lisp'
 
 # git alias
 alias gp='git pull -r'
@@ -47,4 +46,5 @@ alias gdts='git difftool --staged'
 
 
 # servers
-alias co='ssh wws@47.98.133.22'
+alias ss='ssh wws@47.98.133.22 -qt "tmux at -t 0"'
+

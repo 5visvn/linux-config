@@ -8,6 +8,8 @@
 (add-to-list 'load-path (expand-file-name "~/elisp/nox"))
 ;; exec path of some programe not installed in /usr/local/bin
 ;; (add-to-list 'exec-path (expand-file-name "~/tools/xxx/bin"))
+;; common lisp
+(setq inferior-lisp-program "/usr/bin/sbcl")
 
 ;; package list
 (setq package-list '(swiper
@@ -16,6 +18,7 @@
                      save-visited-files
                      eshell-up
                      company
+                     slime
                      ;; treemacs
                      bbyac
                      which-key
