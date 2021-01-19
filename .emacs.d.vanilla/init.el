@@ -314,7 +314,7 @@
 (require 'plantuml-mode)
 (add-to-list 'auto-mode-alist '("\\.uml\\'" . plantuml-mode)) ;; auto enable plantuml-mode for .uml files
 (setq org-plantuml-jar-path (expand-file-name "~/tools/plantuml.jar"))
-(add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+;; (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
 (setq plantuml-jar-path (expand-file-name "~/tools/plantuml.jar"))
 (setq plantuml-default-exec-mode 'jar)
 (setq plantuml-output-type 'png)
