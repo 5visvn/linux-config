@@ -314,9 +314,10 @@
 (require 'plantuml-mode)
 (add-to-list 'auto-mode-alist '("\\.uml\\'" . plantuml-mode)) ;; auto enable plantuml-mode for .uml files
 (setq org-plantuml-jar-path (expand-file-name "~/tools/plantuml.jar"))
+(add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
 (setq plantuml-jar-path (expand-file-name "~/tools/plantuml.jar"))
 (setq plantuml-default-exec-mode 'jar)
-(plantuml-set-output-type 'png)
+(setq plantuml-output-type 'png)
 (add-hook 'plantuml-mode-hook
           (lambda ()
             (local-set-key (kbd "C-c C-c") 'plantuml-preview-current-block)))
@@ -341,15 +342,27 @@
 
 
 ;;; org-mode customize
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((plantuml . t)
+   (latex . t)
+   (shell . t)
+   (emacs-lisp . t)
+   (lisp . t)
+   (C . t)))
 ;; image can be resize on view
 (setq org-image-actual-width nil)
+(setq org-startup-with-inline-images t)
 ;; org source code indentation
 (setq org-src-tab-acts-natively t)
 (add-hook 'org-mode-hook
           (lambda ()
             (org-bullets-mode 1)))
 
+
+
 (setq c-default-style "ellemtel" c-basic-offset 3)
+
 
 ;; tag file
 ;;(setq tags-file-name (concat "/tmp/" user-login-name "/esapc/gtags"))
@@ -572,15 +585,8 @@ Version 2017-09-01"
  '(custom-safe-themes
    '("d9646b131c4aa37f01f909fbdd5a9099389518eb68f25277ed19ba99adeb7279" "0231f20341414f4091fc8ea36f28fa1447a4bc62923565af83cfb89a6a1e7d4a" "46b2d7d5ab1ee639f81bde99fcd69eb6b53c09f7e54051a591288650c29135b0" "f3ab34b145c3b2a0f3a570ddff8fabb92dafc7679ac19444c31058ac305275e1" default))
  '(monokai-background "#000000")
- '(org-babel-load-languages
-   '((plantuml . t)
-     (latex . t)
-     (shell . t)
-     (emacs-lisp . t)
-     (lisp . t)
-     (C . t)))
  '(package-selected-packages
-   '(org-bullets disaster electric-operator auto-complete w3m goto-last-change goto-last-point magit-gerrit origami monokai-alt-theme counsel-gtags all-the-icons-ivy all-the-icons liberime imenu-list ivy-avy treemacs eshell-up save-visited-files org-pretty-tags go-mode yaml-imenu yaml-mode better-jumper folding bind-key cuda-mode demangle-mode modern-cpp-font-lock opencl-mode go smex projectile-ripgrep counsel use-package counsel-projectile swiper ivy-xref imenus magit git-timemachine fzf yasnippet undo-fu-session undo-fu rime which-key bbyac avy monokai-theme hungry-delete ivy))
+   '(plantuml-mode org-bullets disaster electric-operator auto-complete w3m goto-last-change goto-last-point magit-gerrit origami monokai-alt-theme counsel-gtags all-the-icons-ivy all-the-icons liberime imenu-list ivy-avy treemacs eshell-up save-visited-files org-pretty-tags go-mode yaml-imenu yaml-mode better-jumper folding bind-key cuda-mode demangle-mode modern-cpp-font-lock opencl-mode go smex projectile-ripgrep counsel use-package counsel-projectile swiper ivy-xref imenus magit git-timemachine fzf yasnippet undo-fu-session undo-fu rime which-key bbyac avy monokai-theme hungry-delete ivy))
  '(show-trailing-whitespace t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -590,4 +596,3 @@ Version 2017-09-01"
  )
 
 (set-background-color "black")
-
