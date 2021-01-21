@@ -5,7 +5,9 @@
                          ("org" . "http://mirrors.ustc.edu.cn/elpa/org/")))
 
 ;; packages not in elpa
-(add-to-list 'load-path (expand-file-name "~/elisp/nox"))
+;; (add-to-list 'load-path (expand-file-name "~/elisp/nox"))
+(let ((default-directory  "~/elisp/"))
+  (normal-top-level-add-subdirs-to-load-path))
 ;; exec path of some programe not installed in /usr/local/bin
 ;; (add-to-list 'exec-path (expand-file-name "~/tools/xxx/bin"))
 ;; common lisp
@@ -68,27 +70,29 @@
             (package-install package))
         (package-install package)))))
 
+;; require all packages
+(dolist (package package-list)
+  (require package))
 
 ;; TODO: download github packages automatically
 (setq github-package-list '((nox . "lazycat")
                             ))
+(dolist (package github-package-list)
+  (require (car package)))
 
 
 ;;;;;------------------------------ Keybindings----------------------------
 
 ;; key-bindings for editing -------------------------------
-(require 'hungry-delete)
 (global-set-key (kbd "C-h") 'hungry-delete-backward)
 ;; (global-set-key (kbd "C-h") 'backward-delete-char-untabify)
 (global-set-key (kbd "M-h") 'backward-kill-word)
 ;;(global-set-key (kbd "C-d") 'hungry-delete-forward)
 (global-set-key (kbd "M-k") 'kill-whole-line)
-(require 'bbyac)
 (global-set-key (kbd "M-/") 'bbyac-expand-symbols)
 (global-set-key (kbd "M-l") 'bbyac-expand-lines)
 ;; TODO newline without break current line
 ;; (global-set-key (kbd "C-<return>") 'newline)
-(require 'undo-fu)
 (global-set-key (kbd "C-u") 'undo-fu-only-redo)
 (global-set-key (kbd "M-j") (lambda()
                               (interactive)
@@ -103,11 +107,9 @@
 (global-set-key (kbd "C-x a a") 'align-regexp)
 
 ;; key-bindings for jumping -------------------------------
-(require 'avy)
 (global-set-key (kbd "M-'") 'avy-goto-line)
 (global-set-key (kbd "M-c") 'avy-goto-char-2)
 (global-set-key (kbd "M-C") 'avy-goto-char)
-;; (require 'better-jumper)
 (global-set-key (kbd "C-.") 'xref-find-references)
 (global-set-key (kbd "M-[ 1 ; 5 n") 'xref-find-references)
 (global-set-key (kbd "M-s i") 'imenu)
@@ -116,19 +118,15 @@
 (global-set-key (kbd "M-[ M-[") 'beginning-of-defun)
 (global-set-key (kbd "M-] M-]") 'end-of-defun)
 (global-set-key (kbd "C-z") 'origami-toggle-node)
-(require 'goto-last-change)
 (global-set-key (kbd "C-c /") 'goto-last-change)
-;; (require 'better-jumper)
 ;; (better-jumper-mode 1)
 ;; (global-set-key (kbd "M-n") 'better-jumper-jump-forward)
 ;; (global-set-key (kbd "M-p") 'better-jumper-jump-backward)
 
 ;; ivy
-(require 'ivy)
 (ivy-mode)
 
 ;; key-bindings for search -------------------------------
-(require 'swiper) ;; notes: if complie error, check swiper should be installed from gnu.org
 (global-set-key (kbd "C-s") 'swiper-thing-at-point)
 (global-set-key (kbd "M-s s") 'counsel-projectile-rg)
 (global-set-key (kbd "M-s M-s") 'swiper-all-thing-at-point);; 'counsel-projectile-rg-thing-at-point)
@@ -137,7 +135,6 @@
 (global-set-key (kbd "M-z") 'switch-to-buffer)
 ;; (global-set-key (kbd "C-c b") 'switch-to-buffer)
 (global-set-key (kbd "C-c C-f") 'find-file)
-(require 'projectile)
 (global-set-key (kbd "M-p f") 'projectile--find-file)
 (global-set-key (kbd "C-c p f") 'projectile--find-file)
 (global-set-key (kbd "C-c p i") 'projectile-invalidate-cache)
@@ -151,7 +148,6 @@
 
 
 ;; key-bindings for window -------------------------------
-(require 'winum)
 (winum-mode)
 (global-set-key (kbd "M-1") 'winum-select-window-1)
 (global-set-key (kbd "M-2") 'winum-select-window-2)
@@ -163,7 +159,6 @@
 (global-set-key (kbd "C-r") 'ivy-resume)
 
 ;; key-bindings for magit -------------------------------
-(require 'magit)
 (global-set-key (kbd "M-g f") 'magit-pull)
 (global-set-key (kbd "M-g p") 'magit-push)
 (global-set-key (kbd "M-g d") 'magit-diff)
@@ -291,7 +286,6 @@
 ;;(let ((gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")))
 
 ;; auto highlight
-(require 'auto-highlight-symbol)
 (global-auto-highlight-symbol-mode t)
 
 ;; disable auto save
@@ -311,7 +305,6 @@
 ;; (add-to-list 'nox-server-programs '((go-mode) . ((concat "/home/" user-login-name "/tools/go-language-server/bin/gopls"))))
 
 ;; plantuml
-(require 'plantuml-mode)
 (add-to-list 'auto-mode-alist '("\\.uml\\'" . plantuml-mode)) ;; auto enable plantuml-mode for .uml files
 (setq org-plantuml-jar-path (expand-file-name "~/tools/plantuml.jar"))
 ;; (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
@@ -391,14 +384,12 @@
 
 
 ;; (follow-mode) ;; for read in two screens, it can scroll screens together
-(require 'follow)
 (add-hook 'follow-mode-hook
           (lambda ()
             (local-set-key (kbd "C-v") 'follow-scroll-up)
             (local-set-key (kbd "M-v") 'follow-scroll-down)))
 
 ;;;; company
-(require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 (global-company-mode t)
 (setq company-idle-delay 0
@@ -421,13 +412,9 @@
 
 
 ;; counsel
-(require 'counsel)
 (counsel-mode t)
 ;; remove '^' in M-x
 (setq ivy-initial-inputs-alist nil)
-
-;; rime
-;; (require 'rime)
 
 ;; eshell
 (add-hook 'eshell-mode-hook
@@ -449,15 +436,12 @@
 ;; alias | sed -E "s/^alias ([^=]+)='(.*)'$/alias \1 \2 \$*/g; s/'\\\''/'/g;" >~/.emacs.d/eshell/alias
 
 ;; save
-;; (require 'save-visited-files)
 ;; (save-visited-files-mode t)
-;; (require 'saveplace)
 (save-place-mode t)
 
 ;;
 
 ;;
-(require 'projectile)
 (projectile-mode 1)
 ;; project root
 (setq projectile-enable-caching t)
@@ -469,12 +453,10 @@
 
 ;; which-key
 ;; set which key delay
-(require 'which-key)
 (setq which-key-idle-delay 2.0)
 (which-key-mode 1)
 
 ;; delete trailing whitespace on save only changed lines
-(require 'ws-butler)
 (ws-butler-global-mode 1)
 
 ;; coding
@@ -484,7 +466,6 @@
 ;; auto complete pair for () {} [] "" ...
 (electric-pair-mode 1)
 ;; abbrev
-(require 'abbrev)
 (define-abbrev-table 'global-abbrev-table
   `(
    ("db" ,(concat "TRACE_DEBUG(\"" user-login-name ": [s]\");"))
@@ -577,16 +558,15 @@ Version 2017-09-01"
 
 
 
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(monokai-background "#000000")
  '(custom-enabled-themes '(monokai))
  '(custom-safe-themes
    '("d9646b131c4aa37f01f909fbdd5a9099389518eb68f25277ed19ba99adeb7279" "0231f20341414f4091fc8ea36f28fa1447a4bc62923565af83cfb89a6a1e7d4a" "46b2d7d5ab1ee639f81bde99fcd69eb6b53c09f7e54051a591288650c29135b0" "f3ab34b145c3b2a0f3a570ddff8fabb92dafc7679ac19444c31058ac305275e1" default))
- '(monokai-background "#000000")
  '(package-selected-packages
    '(plantuml-mode org-bullets disaster electric-operator auto-complete w3m goto-last-change goto-last-point magit-gerrit origami monokai-alt-theme counsel-gtags all-the-icons-ivy all-the-icons liberime imenu-list ivy-avy treemacs eshell-up save-visited-files org-pretty-tags go-mode yaml-imenu yaml-mode better-jumper folding bind-key cuda-mode demangle-mode modern-cpp-font-lock opencl-mode go smex projectile-ripgrep counsel use-package counsel-projectile swiper ivy-xref imenus magit git-timemachine fzf yasnippet undo-fu-session undo-fu rime which-key bbyac avy monokai-theme hungry-delete ivy))
  '(show-trailing-whitespace t))
@@ -597,4 +577,3 @@ Version 2017-09-01"
  ;; If there is more than one, they won't work right.
  )
 
-(set-background-color "black")
