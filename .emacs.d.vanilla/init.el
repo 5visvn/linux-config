@@ -317,6 +317,8 @@
 ;; (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
 (setq plantuml-jar-path (expand-file-name "~/tools/plantuml.jar"))
 (setq plantuml-default-exec-mode 'jar)
+;; set plantuml-preview to png for svg image can not displayed correctly in dark themes
+;; You may need to plantuml-set-output-type 'svg or 'txt manualy for output to a svg(more clear and can scale without lose picture )
 (setq plantuml-output-type "png")
 (add-hook 'plantuml-mode-hook
           (lambda ()
