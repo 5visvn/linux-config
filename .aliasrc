@@ -22,10 +22,10 @@ alias get-emacs-dependences-ubuntu='sudo apt install libx11-dev \
      libjpeg-dev libgif-dev libtiff5-dev libncurses5-dev \
      libxft-dev librsvg2-dev libmagickcore-dev libmagick++-dev \
      libxml2-dev libgpm-dev libotf-dev libm17n-dev \
-     libgtk-3-dev libwebkitgtk-3.0-dev libxpm-dev wget\
-     libgnutls28-dev libpng-dev'
+     libgtk-3-dev libxpm-dev wget\
+     libgnutls28-dev libpng-dev libwebkitgtk-3.0-dev '
 alias makeemacs='./configure --prefix=/home/wws/tools/emc27 --with-x-toolkit=no --with-pop=no --with-mailutils --with-jpeg=ifavailable --without-makeinfo --with-modules --with-gnutls=ifavailable --without-x'
-alias build-x-emacs='sudo ./configure --with-xpm=ifavailable --with-jpeg=ifavailable --with-gif=ifavailable --with-tiff=ifavailable --with-x-toolkit=lucid --with-rsvg=ifavailable && sudo make && sudo make install'
+alias build-x-emacs='sudo ./configure --with-xpm=ifavailable --with-jpeg=ifavailable --with-gif=ifavailable --with-tiff=ifavailable --with-rsvg=ifavailable && sudo make && sudo make install'
 
 # linux commands shotcut
 alias logout="ps -ef | rg $USER | rg \"\\-bash\" | awk '{system(\"kill -9 \"\$2)}'"
