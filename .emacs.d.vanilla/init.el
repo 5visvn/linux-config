@@ -179,8 +179,9 @@
 
 ;; (global-hl-todo-mode 1) ;; hl todo seems not be used frequency
 
-(add-to-list 'default-frame-alist '(font . "Source Code Pro" ))
-(set-face-attribute 'default t :font "Source Code Pro" )
+;; (add-to-list 'default-frame-alist '(font . "Source Code Pro"))
+;; (set-face-attribute 'default t :font "Source Code Pro" :height 130)
+(set-frame-font "Source Code Pro-13")
 
 ;; Disable startup screen
 (setq inhibit-splash-screen 1)
@@ -206,19 +207,27 @@
 ;; scroll bar
 (scroll-bar-mode -1)
 
-(setq-default indent-tabs-mode nil)
-(setq default-tab-width 3)
-(setq tab-width 3)
-(setq c-default-style "ellemtel" c-basic-offset 3)
+(global-hl-line-mode t)
+;; display line number
+(global-display-line-numbers-mode -1)
+
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 ;; show tabs and trailing whitespace
 (setq whitespace-style '(face trailing tabs tab-mark))
-(global-hl-line-mode t)
 
+
+;;;;;------------------------------ EDIT ----------------------------
+
+(setq-default indent-tabs-mode nil)
+(setq default-tab-width 3)
+(setq tab-width 3)
+(setq c-default-style "ellemtel" c-basic-offset 3)
 (setq make-backup-files nil)
 (setq mark-ring-max 6)
 (setq global-mark-ring-max 6)
+
+
 
 ;; TODO: mode-line
 (setq-default mode-line-format
@@ -429,25 +438,19 @@
 (setenv "TOOL_DIR" (concat "/tmp/" user-login-name "/tools/"))
 (setenv "TMP_DIR" (concat "/tmp/" user-login-name "/"))
 (setenv "LS_OPTIONS" "-N --color=tty -T 0") ;; TODO: seems not work
-;; eshell alias solution 1
-;; add following line in  the end of .bashrc to create alais file for eshell
-;; alias | sed -E "s/^alias ([^=]+)='(.*)'$/alias \1 \2 \$*/g; s/'\\\''/'/g;" >~/.emacs.d/eshell/alias
 
-;; save
+;; history
 ;; (save-visited-files-mode t)
 (save-place-mode t)
 
-;;
 
-;;
+;; proectile
 (projectile-mode 1)
 ;; project root
 (setq projectile-enable-caching t)
 ;; use .proectile for generating projectile
 ;; (setq projectile-indexing-method 'native)
 
-;; display line number
-(global-display-line-numbers-mode -1)
 
 ;; which-key
 ;; set which key delay
@@ -470,25 +473,7 @@
     ("dx" ,(concat "TRACE_DEBUG_EX(\"" user-login-name ": s[\"<< v <<\"]\");"))
     ("td" ,(concat "// TODO: " user-login-name ": "))
     ))
-
-
 (abbrev-mode 1)
-;; (use-package abbrev
-;;   :ensure t
-;;   :init
-;;   (abbrev-mode t)
-;;   ;; a hook funtion that sets the abbrev-table to org-mode-abbrev-table
-;;   ;; whenever the major mode is a text mode
-;;   ;; (defun tec/set-text-mode-abbrev-table ()
-;;   ;;   (if (derived-mode-p 'text-mode)
-;;   ;;       (setq local-abbrev-table org-mode-abbrev-table)))
-;;   ;; :commands abbrev-mode
-;;   ;; :hook
-;;   ;; (abbrev-mode . tec/set-text-mode-abbrev-table)
-;;   ;; :config
-;;   ;; (setq abbrev-file-name (expand-file-name "abbrev.el" doom-private-dir))
-;;   ;; (setq save-abbrevs 'silently)
-;;   )
 
 
 ;; avy goto char mode mark to a specific char
@@ -505,11 +490,8 @@
   "Copy the current buffer's file path or dired path to `kill-ring'.
 Result is full path.
 If `universal-argument' is called first, copy only the dir path.
-
 If in dired, copy the file/dir cursor is on, or marked files.
-
 If a buffer is not file and not dired, copy value of `default-directory' (which is usually the “current” dir when that buffer was created)
-
 URL `http://ergoemacs.org/emacs/emacs_copy_file_path.html'
 Version 2017-09-01"
   (interactive "P")
@@ -551,8 +533,6 @@ Version 2017-09-01"
       ))
   (kill-ring-save 0 0 (ivy-thing-at-point))
   )
-
-
 
 
 
