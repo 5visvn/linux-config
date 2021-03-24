@@ -22,6 +22,7 @@
                      company
                      slime
                      ;; treemacs
+                     all-the-icons
                      bbyac
                      which-key
                      rime
@@ -156,6 +157,7 @@
 (global-set-key (kbd "M-4") 'winum-select-window-4)
 (global-set-key (kbd "M-0") 'treemacs-select-window)
 (global-set-key (kbd "C-x C-o") 'other-window)
+(global-set-key (kbd "C-c o") 'other-window)
 (global-set-key (kbd "C-r") 'ivy-resume)
 
 ;; key-bindings for magit -------------------------------
@@ -273,14 +275,16 @@
                             (interactive)
                             (scroll-up-line 10)
                             ))
-(global-set-key [C-mouse-4] (lambda ()
-                            (interactive)
-                            (scroll-down-line 20)
-                            ))
-(global-set-key [C-mouse-5] (lambda ()
-                            (interactive)
-                            (scroll-up-line 20)
-                            ))
+;; (global-set-key [C-mouse-4] (lambda ()
+;;                             (interactive)
+;;                             (scroll-down-line 20)
+;;                             ))
+;; (global-set-key [C-mouse-5] (lambda ()
+;;                             (interactive)
+;;                             (scroll-up-line 20)
+;;                             ))
+
+
 
 
 ;; scroll ones line
@@ -368,6 +372,7 @@
 
 ;; tag file
 ;;(setq tags-file-name (concat "/tmp/" user-login-name "/esapc/gtags"))
+
 
 ;; find other file for hh and cc
 (setq cc-search-directories '("."
@@ -543,15 +548,14 @@ Version 2017-09-01"
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(monokai))
- '(show-trailing-whitespace t)
  '(custom-safe-themes
    '("d9646b131c4aa37f01f909fbdd5a9099389518eb68f25277ed19ba99adeb7279" "0231f20341414f4091fc8ea36f28fa1447a4bc62923565af83cfb89a6a1e7d4a" "46b2d7d5ab1ee639f81bde99fcd69eb6b53c09f7e54051a591288650c29135b0" "f3ab34b145c3b2a0f3a570ddff8fabb92dafc7679ac19444c31058ac305275e1" default))
  '(package-selected-packages
-   '(plantuml-mode org-bullets disaster electric-operator auto-complete w3m goto-last-change goto-last-point magit-gerrit origami monokai-alt-theme counsel-gtags all-the-icons-ivy all-the-icons liberime imenu-list ivy-avy treemacs eshell-up save-visited-files org-pretty-tags go-mode yaml-imenu yaml-mode better-jumper folding bind-key cuda-mode demangle-mode modern-cpp-font-lock opencl-mode go smex projectile-ripgrep counsel use-package counsel-projectile swiper ivy-xref imenus magit git-timemachine fzf yasnippet undo-fu-session undo-fu rime which-key bbyac avy monokai-theme hungry-delete ivy)))
+   '(w32-browser xmind-org org-mind-map leetcode plantuml-mode org-bullets disaster electric-operator auto-complete w3m goto-last-change goto-last-point magit-gerrit origami monokai-alt-theme counsel-gtags all-the-icons-ivy all-the-icons liberime imenu-list ivy-avy treemacs eshell-up save-visited-files org-pretty-tags go-mode yaml-imenu yaml-mode better-jumper folding bind-key cuda-mode demangle-mode modern-cpp-font-lock opencl-mode go smex projectile-ripgrep counsel use-package counsel-projectile swiper ivy-xref imenus magit git-timemachine fzf yasnippet undo-fu-session undo-fu rime which-key bbyac avy monokai-theme hungry-delete ivy))
+ '(show-trailing-whitespace t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
