@@ -1,10 +1,10 @@
 #!/bin/bash
 # tools
 #alias emc='pkill emacsclient ; emacsclient -t --socket-name ~/.emacs.d/server/server -a=""'
-alias emct='pkill emacsclient ; emacsclient -t  -a=""'
-alias emcn='emacsclient -t  -a=""'
+alias emc='pkill emacsclient ; emacsclient -t  -a=""'
+alias em='emacsclient -t  -a=""'
 # --socket-name ~/.emacs.d/server/server'
-alias emc='emacsclient -c -a="" &'
+alias emcx='emacsclient -c -a="" &'
 alias emcs='emacs -nw --daemon'
 alias doom='$HOME/.emacs.d/bin/doom'
 # alias global='~/tools/global/bin/global'
@@ -16,6 +16,7 @@ alias tsk='~/tools/termshark'
 # alias uml='java -jar ~/tools/plantuml.jar'
 alias uml='~/tools/uml.sh'
 alias tm='tmux attach -t 0 || tmux'
+alias tm='tmux detach-client -a'
 alias st='~/tools/st/st'
 
 alias get-emacs-dependences-ubuntu='sudo apt install libx11-dev \
@@ -38,6 +39,7 @@ alias unreal='cd ~/develop/unrealEngine-release'
 
 # git alias
 alias gp='git pull -r'
+alias gf='git fetch --all'
 alias gb='git branch'
 alias gs='git status -s'
 alias gl='git log --oneline'
@@ -49,7 +51,6 @@ alias gd='git diff'
 alias gds='git diff --staged'
 alias gdt='git difftool'
 alias gdts='git difftool --staged'
-
 
 # servers
 alias ss='ssh wws@47.98.133.22 -qt "tmux at -t 0"'

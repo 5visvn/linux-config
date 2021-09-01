@@ -1,4 +1,4 @@
-#! /usr/bin/bash
+#! /bin/bash
 
 emacs=`which emacs`
 echo "dumping emacs for $emacs"

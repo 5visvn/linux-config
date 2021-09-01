@@ -29,7 +29,7 @@ function parse_git_branch()
   local result=$(git_brc)
   if [ -z "$result" ]
   then
-    echo "out of repository"
+    echo $HOSTNAME
   else
     echo $result
   fi

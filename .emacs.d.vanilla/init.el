@@ -38,14 +38,18 @@
                      ws-butler
                      avy
                      yasnippet
+                     rg
+                     ripgrep
                      ;;;; cpp
+                     cmake-mode
                      with-editor
-                     cuda-mode
+                     ;; cuda-mode
                      imenu-list
-                     demangle-mode
-                     disaster
+                     demangle-mode ;; replace typedef name
+                     disaster ;; compile c++ to assembly code
                      modern-cpp-font-lock
                      opencl-mode
+                     lsp-mode
                      ;;;; end of cpp
                      ;; org
                      org-bullets
@@ -55,6 +59,7 @@
                      git-timemachine
                      magit
                      counsel
+                     counsel-projectile
                      auto-highlight-symbol
                      goto-last-change
                      monokai-theme
@@ -91,7 +96,7 @@
 ;;(global-set-key (kbd "C-d") 'hungry-delete-forward)
 (global-set-key (kbd "M-k") 'kill-whole-line)
 (global-set-key (kbd "M-/") 'bbyac-expand-symbols)
-(global-set-key (kbd "M-l") 'bbyac-expand-lines)
+(global-set-key (kbd "M-;") 'bbyac-expand-lines)
 ;; TODO newline without break current line
 ;; (global-set-key (kbd "C-<return>") 'newline)
 (global-set-key (kbd "C-u") 'undo-fu-only-redo)
@@ -108,7 +113,7 @@
 (global-set-key (kbd "C-x a a") 'align-regexp)
 
 ;; key-bindings for jumping -------------------------------
-(global-set-key (kbd "M-'") 'avy-goto-line)
+(global-set-key (kbd "M-l") 'avy-goto-line)
 (global-set-key (kbd "M-c") 'avy-goto-char-2)
 (global-set-key (kbd "M-C") 'avy-goto-char)
 (global-set-key (kbd "C-.") 'xref-find-references)
@@ -119,7 +124,7 @@
 (global-set-key (kbd "M-[ M-[") 'beginning-of-defun)
 (global-set-key (kbd "M-] M-]") 'end-of-defun)
 (global-set-key (kbd "C-z") 'origami-toggle-node)
-(global-set-key (kbd "C-c /") 'goto-last-change)
+(global-set-key (kbd "C-c C-SPC") 'goto-last-change)
 ;; (better-jumper-mode 1)
 ;; (global-set-key (kbd "M-n") 'better-jumper-jump-forward)
 ;; (global-set-key (kbd "M-p") 'better-jumper-jump-backward)
@@ -131,13 +136,14 @@
 (global-set-key (kbd "C-s") 'swiper-thing-at-point)
 (global-set-key (kbd "M-s s") 'counsel-projectile-rg)
 (global-set-key (kbd "M-s M-s") 'swiper-all-thing-at-point);; 'counsel-projectile-rg-thing-at-point)
+(global-set-key (kbd "M-s y") 'kill-new-thing-at-point)
 
 ;; key-bindings for file -------------------------------
 (global-set-key (kbd "M-z") 'switch-to-buffer)
 ;; (global-set-key (kbd "C-c b") 'switch-to-buffer)
 (global-set-key (kbd "C-c C-f") 'find-file)
-(global-set-key (kbd "M-p f") 'projectile--find-file)
 (global-set-key (kbd "C-c p f") 'projectile--find-file)
+(global-set-key (kbd "C-c p d") 'projectile-find-dir)
 (global-set-key (kbd "C-c p i") 'projectile-invalidate-cache)
 ;; (global-set-key (kbd "M-p") 'previous-buffer)
 ;; (global-set-key (kbd "M-n") 'next-buffer)
@@ -169,13 +175,15 @@
 (global-set-key (kbd "M-g m") 'smerge-keep-mine)
 (global-set-key (kbd "M-g o") 'smerge-keep-other)
 
-
 ;; key-bindings for term -------------------------------
 (add-hook 'term-mode-hook
           (lambda ()
             (setq show-trailing-whitespace nil)
             (define-key term-raw-map (kbd "M-z") 'switch-to-buffer)
             (define-key term-raw-map (kbd "M-x") 'counsel-M-x)))
+;; macro keybindings ---
+(global-set-key (kbd "<f8>") 'start-kbd-macro)
+(global-set-key (kbd "<f9>") 'end-kbd-macro)
 
 ;;;;;------------------------------ UI ----------------------------
 
@@ -207,7 +215,7 @@
 (display-time-mode 1)
 
 ;; scroll bar
-(scroll-bar-mode -1)
+;; (scroll-bar-mode nil)
 
 (global-hl-line-mode t)
 ;; display line number
@@ -222,9 +230,9 @@
 ;;;;;------------------------------ EDIT ----------------------------
 
 (setq-default indent-tabs-mode nil)
-(setq default-tab-width 3)
-(setq tab-width 3)
-(setq c-default-style "ellemtel" c-basic-offset 3)
+(setq default-tab-width 4)
+(setq tab-width 4)
+(setq c-default-style "ellemtel" c-basic-offset 4)
 (setq make-backup-files nil)
 (setq mark-ring-max 6)
 (setq global-mark-ring-max 6)
@@ -304,16 +312,7 @@
 (setq auto-save-default nil)
 
 ;; recenter
-(setq recenter-positions '(middle top bottom))
-
-;; (setq nox-python-server-dir (concat "/home/" user-login-name "/tools/python-language-server/bin"))
-;; (setq nox-python-server "pyls")
-
-;; add exec-path for running command
-;; todo use home directory, home directory is quiet slow, maybe the reason is GOROOT
-;; (add-to-list 'exec-path (concat "/home/" user-login-name "/tools/go-language-server/bin"))
-;; (add-to-list 'exec-path (concat "/tmp/" user-login-name "/sapc_go/bin"))
-;; (add-to-list 'nox-server-programs '((go-mode) . ((concat "/home/" user-login-name "/tools/go-language-server/bin/gopls"))))
+(setq recenter-positions '(top middle bottom))
 
 ;; plantuml
 (add-to-list 'auto-mode-alist '("\\.uml\\'" . plantuml-mode)) ;; auto enable plantuml-mode for .uml files
@@ -328,9 +327,19 @@
           (lambda ()
             (local-set-key (kbd "C-c C-c") 'plantuml-preview-current-block)))
 
+;;;; client of Language Protocal Server(lsp) ------------------
+;;; nox
+;; (setq nox-python-server-dir (concat "/home/" user-login-name "/tools/python-language-server/bin"))
+;; (setq nox-python-server "pyls")
 
-(add-to-list 'exec-path (concat "/tmp/" user-login-name "/tools/clang+llvm-10.0.0-x86_64-linux-sles11.3/bin/"))
-(add-to-list 'nox-server-programs '((c++-mode c-mode) . ("clangd")))
+;; add exec-path for running command
+;; todo use home directory, home directory is quiet slow, maybe the reason is GOROOT
+;; (add-to-list 'exec-path (concat "/home/" user-login-name "/tools/go-language-server/bin"))
+;; (add-to-list 'exec-path (concat "/tmp/" user-login-name "/sapc_go/bin"))
+;; (add-to-list 'nox-server-programs '((go-mode) . ((concat "/home/" user-login-name "/tools/go-language-server/bin/gopls"))))
+
+;; (add-to-list 'exec-path (concat "/home/" user-login-name "/tools/clangd_12.0.0/bin/"))
+(add-to-list 'nox-server-programs '((c++-mode c-mode) . ("clangd" "--background-index=false")))
 (dolist (hook (list
                ;; 'js-mode-hook
                ;; 'python-mode-hook
@@ -342,6 +351,22 @@
                ;; 'go-mode-hook   ;; gopls is quiet slow
                ))
   (add-hook hook '(lambda () (nox-ensure))))
+
+;; lsp-mode
+;; skip background indexing when project is huge
+
+;; (lsp-mode)
+;; (add-to-list 'lsp-clients-clangd-args "--background-index=false")
+;; (add-hook 'c++-mode-hook 'lsp-mode)
+
+
+;; clang-format for coding rules
+(add-to-list 'exec-path "/tools/clang+llvm-10.0.0-x86_64-linux-gnu-ubuntu-18.04/bin/")
+;; (add-hook 'c++-mode-hook
+;;           (lambda () (add-hook 'before-save-hook
+;;                                (lambda () (clang-format-buffer)))))
+
+
 
 ;;(add-hook 'minibuffer-setup-hook
                          ;;(lambda () (setq truncate-lines nil)))
@@ -367,7 +392,7 @@
 
 
 
-(setq c-default-style "ellemtel" c-basic-offset 3)
+(setq c-default-style "ellemtel" c-basic-offset 4)
 
 
 ;; tag file
@@ -474,9 +499,9 @@
 ;; abbrev
 (define-abbrev-table 'global-abbrev-table
   `(
-   ("db" ,(concat "TRACE_DEBUG(\"" user-login-name ": [s]\");"))
-    ("dx" ,(concat "TRACE_DEBUG_EX(\"" user-login-name ": s[\"<< v <<\"]\");"))
-    ("td" ,(concat "// TODO: " user-login-name ": "))
+    ("db" ,(concat "pm_log.log_info(\"[1;37;42m" user-login-name ": [%str][0;39;49m\\n\");"))
+    ("dx" ,(concat "pm_log.log_info() << \"[1;37;42m" user-login-name ": str [\" << var << \"][0;39;49m\" << std::endl;"))
+    ("td" ,(concat "// TODO: " user-login-name ":"))
     ))
 (abbrev-mode 1)
 
@@ -529,14 +554,14 @@ Version 2017-09-01"
 
 
 ;; project search at point
-(defun counsel-projectile-rg-thing-at-point ()
+(defun kill-new-thing-at-point ()
   (interactive)
   ;; (counsel-projectile-rg (thing-at-point 'symbol))
-  (let ((thing (thing-at-point 'symbol)))
-    (progn
-      (counsel-projectile-rg)
-      ))
-  (kill-ring-save 0 0 (ivy-thing-at-point))
+  (kill-new (ivy-thing-at-point))
+  ;; (let ((thing (thing-at-point 'symbol)))
+  ;;   (progn
+  ;;     (counsel-projectile-rg)
+  ;;     ))
   )
 
 
@@ -551,7 +576,7 @@ Version 2017-09-01"
  '(custom-safe-themes
    '("d9646b131c4aa37f01f909fbdd5a9099389518eb68f25277ed19ba99adeb7279" "0231f20341414f4091fc8ea36f28fa1447a4bc62923565af83cfb89a6a1e7d4a" "46b2d7d5ab1ee639f81bde99fcd69eb6b53c09f7e54051a591288650c29135b0" "f3ab34b145c3b2a0f3a570ddff8fabb92dafc7679ac19444c31058ac305275e1" default))
  '(package-selected-packages
-   '(w32-browser xmind-org org-mind-map leetcode plantuml-mode org-bullets disaster electric-operator auto-complete w3m goto-last-change goto-last-point magit-gerrit origami monokai-alt-theme counsel-gtags all-the-icons-ivy all-the-icons liberime imenu-list ivy-avy treemacs eshell-up save-visited-files org-pretty-tags go-mode yaml-imenu yaml-mode better-jumper folding bind-key cuda-mode demangle-mode modern-cpp-font-lock opencl-mode go smex projectile-ripgrep counsel use-package counsel-projectile swiper ivy-xref imenus magit git-timemachine fzf yasnippet undo-fu-session undo-fu rime which-key bbyac avy monokai-theme hungry-delete ivy))
+   '(2048-game rg cmake-mode ripgrep wide-column lsp-mode clang-format+ w32-browser xmind-org org-mind-map leetcode plantuml-mode org-bullets disaster electric-operator auto-complete w3m goto-last-change goto-last-point magit-gerrit origami monokai-alt-theme counsel-gtags all-the-icons-ivy all-the-icons liberime imenu-list ivy-avy treemacs eshell-up save-visited-files org-pretty-tags go-mode yaml-imenu yaml-mode better-jumper folding bind-key cuda-mode demangle-mode modern-cpp-font-lock opencl-mode go smex projectile-ripgrep counsel use-package counsel-projectile swiper ivy-xref imenus magit git-timemachine fzf yasnippet undo-fu-session undo-fu rime which-key bbyac avy monokai-theme hungry-delete ivy))
  '(show-trailing-whitespace t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
