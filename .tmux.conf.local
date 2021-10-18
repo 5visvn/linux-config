@@ -313,4 +313,7 @@ bind C-q send-prefix
 # move status line to top
 #set -g status-position top
 
+# longer pane indicators display time (pane number delay)
+set -g display-panes-time 3000
+
 # set -g window-style 'fg=colour250,bg=colour234'

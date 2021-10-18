@@ -8,8 +8,6 @@
 ;; (add-to-list 'load-path (expand-file-name "~/elisp/nox"))
 (let ((default-directory  "~/elisp/"))
   (normal-top-level-add-subdirs-to-load-path))
-;; exec path of some programe not installed in /usr/local/bin
-;; (add-to-list 'exec-path (expand-file-name "~/tools/xxx/bin"))
 ;; common lisp
 (setq inferior-lisp-program "/usr/bin/sbcl")
 
@@ -58,6 +56,7 @@
                      smex
                      git-timemachine
                      magit
+                     fzf
                      counsel
                      counsel-projectile
                      auto-highlight-symbol
@@ -86,6 +85,22 @@
 (dolist (package github-package-list)
   (require (car package)))
 
+;;; exec path from shell path
+(defun set-exec-path-from-shell-PATH ()
+  "Set up Emacs' `exec-path' and PATH environment variable to match
+that used by the user's shell.
+This is particularly useful under Mac OS X and macOS, where GUI
+apps are not started from a shell."
+  (interactive)
+  (let ((path-from-shell (replace-regexp-in-string
+			  "[ \t\n]*$" "" (shell-command-to-string
+					  "$SHELL --login -c 'echo $PATH'"
+						    ))))
+    (setenv "PATH" path-from-shell)
+    (setq exec-path (split-string path-from-shell path-separator))))
+(set-exec-path-from-shell-PATH)
+;; exec path of some programe not installed in /usr/local/bin
+;; (add-to-list 'exec-path (expand-file-name "~/tools/xxx/bin"))
 
 ;;;;;------------------------------ Keybindings----------------------------
 
@@ -125,6 +140,10 @@
 (global-set-key (kbd "M-] M-]") 'end-of-defun)
 (global-set-key (kbd "C-z") 'origami-toggle-node)
 (global-set-key (kbd "C-c C-SPC") 'goto-last-change)
+(global-set-key (kbd "M-f") (lambda()
+                              (interactive)
+                              (forward-thing 'symbol)))
+
 ;; (better-jumper-mode 1)
 ;; (global-set-key (kbd "M-n") 'better-jumper-jump-forward)
 ;; (global-set-key (kbd "M-p") 'better-jumper-jump-backward)
@@ -143,6 +162,7 @@
 ;; (global-set-key (kbd "C-c b") 'switch-to-buffer)
 (global-set-key (kbd "C-c C-f") 'find-file)
 (global-set-key (kbd "C-c p f") 'projectile--find-file)
+(global-set-key (kbd "C-c f") 'fzf-find-file)
 (global-set-key (kbd "C-c p d") 'projectile-find-dir)
 (global-set-key (kbd "C-c p i") 'projectile-invalidate-cache)
 ;; (global-set-key (kbd "M-p") 'previous-buffer)
@@ -184,6 +204,7 @@
 ;; macro keybindings ---
 (global-set-key (kbd "<f8>") 'start-kbd-macro)
 (global-set-key (kbd "<f9>") 'end-kbd-macro)
+(global-set-key (kbd "<f10>") 'call-last-kbd-macro)
 
 ;;;;;------------------------------ UI ----------------------------
 
@@ -338,7 +359,8 @@
 ;; (add-to-list 'exec-path (concat "/tmp/" user-login-name "/sapc_go/bin"))
 ;; (add-to-list 'nox-server-programs '((go-mode) . ((concat "/home/" user-login-name "/tools/go-language-server/bin/gopls"))))
 
-;; (add-to-list 'exec-path (concat "/home/" user-login-name "/tools/clangd_12.0.0/bin/"))
+(add-to-list 'exec-path (concat "/home/" user-login-name "/tools/clangd_12.0.0/bin/"))
+;; (add-to-list 'exec-path "/opt/clang13-for-tng/bin/")
 (add-to-list 'nox-server-programs '((c++-mode c-mode) . ("clangd" "--background-index=false")))
 (dolist (hook (list
                ;; 'js-mode-hook
@@ -402,9 +424,12 @@
 ;; find other file for hh and cc
 (setq cc-search-directories '("."
                               ".."
-                              "./mobile"
                               "../incl"
+                              "../include"
+                              "../include/ip/*"
                               "../src"
+                              "../../src"
+                              "../../../src"
                               ))
 
 ;; projectile use ivy
@@ -499,8 +524,8 @@
 ;; abbrev
 (define-abbrev-table 'global-abbrev-table
   `(
-    ("db" ,(concat "pm_log.log_info(\"[1;37;42m" user-login-name ": [%str][0;39;49m\\n\");"))
-    ("dx" ,(concat "pm_log.log_info() << \"[1;37;42m" user-login-name ": str [\" << var << \"][0;39;49m\" << std::endl;"))
+    ("db" ,(concat "pm_log.log_error(\"[1;37;42m" user-login-name ": [%str][0;39;49m\\n\");"))
+    ("dx" ,(concat "pm_log.log_error() << \"[1;37;42m" user-login-name ": str [\" << var << \"][0;39;49m\" << std::endl;"))
     ("td" ,(concat "// TODO: " user-login-name ":"))
     ))
 (abbrev-mode 1)
@@ -544,7 +569,8 @@ Version 2017-09-01"
          (message "File path copied: 「%s」" $fpath)
          $fpath )))))
 
-
+;; treemacs customize
+(setq treemacs-position 'right)
 
 ;; open init file
 (defun open-init-file ()
@@ -572,11 +598,11 @@ Version 2017-09-01"
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-enabled-themes '(monokai))
+ '(custom-enabled-themes '(monokai-alt))
  '(custom-safe-themes
    '("d9646b131c4aa37f01f909fbdd5a9099389518eb68f25277ed19ba99adeb7279" "0231f20341414f4091fc8ea36f28fa1447a4bc62923565af83cfb89a6a1e7d4a" "46b2d7d5ab1ee639f81bde99fcd69eb6b53c09f7e54051a591288650c29135b0" "f3ab34b145c3b2a0f3a570ddff8fabb92dafc7679ac19444c31058ac305275e1" default))
  '(package-selected-packages
-   '(2048-game rg cmake-mode ripgrep wide-column lsp-mode clang-format+ w32-browser xmind-org org-mind-map leetcode plantuml-mode org-bullets disaster electric-operator auto-complete w3m goto-last-change goto-last-point magit-gerrit origami monokai-alt-theme counsel-gtags all-the-icons-ivy all-the-icons liberime imenu-list ivy-avy treemacs eshell-up save-visited-files org-pretty-tags go-mode yaml-imenu yaml-mode better-jumper folding bind-key cuda-mode demangle-mode modern-cpp-font-lock opencl-mode go smex projectile-ripgrep counsel use-package counsel-projectile swiper ivy-xref imenus magit git-timemachine fzf yasnippet undo-fu-session undo-fu rime which-key bbyac avy monokai-theme hungry-delete ivy))
+   '(csv-mode 2048-game rg cmake-mode ripgrep wide-column lsp-mode clang-format+ w32-browser xmind-org org-mind-map leetcode plantuml-mode org-bullets disaster electric-operator auto-complete w3m goto-last-change goto-last-point magit-gerrit origami monokai-alt-theme counsel-gtags all-the-icons-ivy all-the-icons liberime imenu-list ivy-avy treemacs eshell-up save-visited-files org-pretty-tags go-mode yaml-imenu yaml-mode better-jumper folding bind-key cuda-mode demangle-mode modern-cpp-font-lock opencl-mode go smex projectile-ripgrep counsel use-package counsel-projectile swiper ivy-xref imenus magit git-timemachine fzf yasnippet undo-fu-session undo-fu rime which-key bbyac avy monokai-theme hungry-delete ivy))
  '(show-trailing-whitespace t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
