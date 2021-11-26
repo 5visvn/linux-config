@@ -171,8 +171,21 @@ apps are not started from a shell."
 (global-set-key (kbd "M-g M-a") 'ff-get-other-file)
 (global-set-key (kbd "M-g b") 'magit-blame)
 (global-set-key (kbd "M-g t") 'git-timemachine)
-
-
+;; clang-format for c,c++
+(add-hook 'c++-mode-hook
+          (lambda ()
+            (define-key c++-mode-map (kbd "C-x C-s")
+              '(lambda ()
+                 (interactive)
+                 (clang-format-buffer)
+                 (save-buffer)))))
+(add-hook 'c-mode-hook
+          (lambda ()
+            (define-key c-mode-map (kbd "C-x C-s")
+              '(lambda ()
+                 (interactive)
+                 (clang-format-buffer)
+                 (save-buffer)))))
 
 ;; key-bindings for window -------------------------------
 (winum-mode)
@@ -257,7 +270,7 @@ apps are not started from a shell."
 (setq make-backup-files nil)
 (setq mark-ring-max 6)
 (setq global-mark-ring-max 6)
-
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode)) ;; regarding .h as c++ file
 
 
 ;; TODO: mode-line
@@ -415,7 +428,6 @@ apps are not started from a shell."
 
 
 (setq c-default-style "ellemtel" c-basic-offset 4)
-
 
 ;; tag file
 ;;(setq tags-file-name (concat "/tmp/" user-login-name "/esapc/gtags"))
