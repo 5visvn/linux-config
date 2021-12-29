@@ -114,7 +114,7 @@ apps are not started from a shell."
 (global-set-key (kbd "M-;") 'bbyac-expand-lines)
 ;; TODO newline without break current line
 ;; (global-set-key (kbd "C-<return>") 'newline)
-(global-set-key (kbd "C-u") 'undo-fu-only-redo)
+(global-set-key (kbd "C-u") 'undo-tree-visualize)
 (global-set-key (kbd "M-j") (lambda()
                               (interactive)
                               (end-of-line)
@@ -171,21 +171,6 @@ apps are not started from a shell."
 (global-set-key (kbd "M-g M-a") 'ff-get-other-file)
 (global-set-key (kbd "M-g b") 'magit-blame)
 (global-set-key (kbd "M-g t") 'git-timemachine)
-;; clang-format for c,c++
-(add-hook 'c++-mode-hook
-          (lambda ()
-            (define-key c++-mode-map (kbd "C-x C-s")
-              '(lambda ()
-                 (interactive)
-                 (clang-format-buffer)
-                 (save-buffer)))))
-(add-hook 'c-mode-hook
-          (lambda ()
-            (define-key c-mode-map (kbd "C-x C-s")
-              '(lambda ()
-                 (interactive)
-                 (clang-format-buffer)
-                 (save-buffer)))))
 
 ;; key-bindings for window -------------------------------
 (winum-mode)
@@ -271,7 +256,7 @@ apps are not started from a shell."
 (setq mark-ring-max 6)
 (setq global-mark-ring-max 6)
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode)) ;; regarding .h as c++ file
-
+(global-undo-tree-mode)
 
 ;; TODO: mode-line
 (setq-default mode-line-format
@@ -293,9 +278,9 @@ apps are not started from a shell."
                 ;; (vc-mode lunaryorn-vc-mode-line)   VC information
                 ;; (flycheck-mode flycheck-mode-line) ; Flycheck status
                 ;; (multiple-cursors-mode mc/mode-line) ; Number of cursors
-                ;; Misc information, notably battery state and function name
-                "\t  "
-                mode-line-misc-info
+                ;; "\t  "
+                ;; ;; Misc information, notably battery state and function name
+                ;; mode-line-misc-info
                 "\t  "
                 (vc-mode vc-mode)
                 ;; And the modes, which I don't really care for anyway
@@ -329,7 +314,7 @@ apps are not started from a shell."
 
 
 
-;; scroll ones line
+;; scroll one line
 (setq redisplay-dont-pause t
   scroll-margin 0
   scroll-step 1
@@ -347,6 +332,9 @@ apps are not started from a shell."
 
 ;; recenter
 (setq recenter-positions '(top middle bottom))
+
+
+;;;; ------------------------------- Programing -------------------------
 
 ;; plantuml
 (add-to-list 'auto-mode-alist '("\\.uml\\'" . plantuml-mode)) ;; auto enable plantuml-mode for .uml files
@@ -372,7 +360,20 @@ apps are not started from a shell."
 ;; (add-to-list 'exec-path (concat "/tmp/" user-login-name "/sapc_go/bin"))
 ;; (add-to-list 'nox-server-programs '((go-mode) . ((concat "/home/" user-login-name "/tools/go-language-server/bin/gopls"))))
 
+;;;;  -------------------------C-CPP/C++----------------------
 (add-to-list 'exec-path (concat "/home/" user-login-name "/tools/clangd_12.0.0/bin/"))
+
+;; clang-format for c,c++
+(require 'cc-mode)
+(define-key c-mode-base-map (kbd "C-x C-s")
+  '(lambda ()
+     (interactive)
+     (clang-format-buffer)
+     (save-buffer)))
+;; spell/typo check
+(require 'cc-vars)
+(add-hook 'c-mode-common-hook 'flyspell-prog-mode)
+
 ;; (add-to-list 'exec-path "/opt/clang13-for-tng/bin/")
 (add-to-list 'nox-server-programs '((c++-mode c-mode) . ("clangd" "--background-index=false")))
 (dolist (hook (list
@@ -385,7 +386,19 @@ apps are not started from a shell."
                'c++-mode-hook
                ;; 'go-mode-hook   ;; gopls is quiet slow
                ))
-  (add-hook hook '(lambda () (nox-ensure))))
+  (add-hook hook 'nox-ensure))
+
+;; find other file for hh and cc
+(setq cc-search-directories '("."
+                              ".."
+                              "../incl"
+                              "../include"
+                              "../include/*/*"
+                              "../src"
+                              "../../src"
+                              "../../../src"
+                              ))
+
 
 ;; lsp-mode
 ;; skip background indexing when project is huge
@@ -393,14 +406,6 @@ apps are not started from a shell."
 ;; (lsp-mode)
 ;; (add-to-list 'lsp-clients-clangd-args "--background-index=false")
 ;; (add-hook 'c++-mode-hook 'lsp-mode)
-
-
-;; clang-format for coding rules
-(add-to-list 'exec-path "/tools/clang+llvm-10.0.0-x86_64-linux-gnu-ubuntu-18.04/bin/")
-;; (add-hook 'c++-mode-hook
-;;           (lambda () (add-hook 'before-save-hook
-;;                                (lambda () (clang-format-buffer)))))
-
 
 
 ;;(add-hook 'minibuffer-setup-hook
@@ -426,23 +431,9 @@ apps are not started from a shell."
             (org-bullets-mode 1)))
 
 
-
-(setq c-default-style "ellemtel" c-basic-offset 4)
-
 ;; tag file
 ;;(setq tags-file-name (concat "/tmp/" user-login-name "/esapc/gtags"))
 
-
-;; find other file for hh and cc
-(setq cc-search-directories '("."
-                              ".."
-                              "../incl"
-                              "../include"
-                              "../include/ip/*"
-                              "../src"
-                              "../../src"
-                              "../../../src"
-                              ))
 
 ;; projectile use ivy
 (setq projectile-completion-system 'ivy)
@@ -590,7 +581,6 @@ Version 2017-09-01"
   (find-file "~/.emacs.d/init.el")
   )
 
-
 ;; project search at point
 (defun kill-new-thing-at-point ()
   (interactive)
@@ -603,8 +593,6 @@ Version 2017-09-01"
   )
 
 
-
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -612,9 +600,12 @@ Version 2017-09-01"
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(monokai-alt))
  '(custom-safe-themes
-   '("d9646b131c4aa37f01f909fbdd5a9099389518eb68f25277ed19ba99adeb7279" "0231f20341414f4091fc8ea36f28fa1447a4bc62923565af83cfb89a6a1e7d4a" "46b2d7d5ab1ee639f81bde99fcd69eb6b53c09f7e54051a591288650c29135b0" "f3ab34b145c3b2a0f3a570ddff8fabb92dafc7679ac19444c31058ac305275e1" default))
+   '("ebd9cbb62c7fd465af6618ac6056d1a12fa77e26b3d3354d5fbd96bad265e9f8" "4b4a0f6ea69ec4cbbd847b34937fb78b72a0151cb185038889e22fe4bf88889f" "d9646b131c4aa37f01f909fbdd5a9099389518eb68f25277ed19ba99adeb7279" "0231f20341414f4091fc8ea36f28fa1447a4bc62923565af83cfb89a6a1e7d4a" "46b2d7d5ab1ee639f81bde99fcd69eb6b53c09f7e54051a591288650c29135b0" "f3ab34b145c3b2a0f3a570ddff8fabb92dafc7679ac19444c31058ac305275e1" default))
+ '(global-display-line-numbers-mode t)
+ '(lsp-dired-mode t nil (lsp-dired))
+ '(monokai-background "#000000")
  '(package-selected-packages
-   '(csv-mode 2048-game rg cmake-mode ripgrep wide-column lsp-mode clang-format+ w32-browser xmind-org org-mind-map leetcode plantuml-mode org-bullets disaster electric-operator auto-complete w3m goto-last-change goto-last-point magit-gerrit origami monokai-alt-theme counsel-gtags all-the-icons-ivy all-the-icons liberime imenu-list ivy-avy treemacs eshell-up save-visited-files org-pretty-tags go-mode yaml-imenu yaml-mode better-jumper folding bind-key cuda-mode demangle-mode modern-cpp-font-lock opencl-mode go smex projectile-ripgrep counsel use-package counsel-projectile swiper ivy-xref imenus magit git-timemachine fzf yasnippet undo-fu-session undo-fu rime which-key bbyac avy monokai-theme hungry-delete ivy))
+   '(undo-tree csv-mode 2048-game rg cmake-mode ripgrep wide-column lsp-mode clang-format+ w32-browser xmind-org org-mind-map leetcode plantuml-mode org-bullets disaster electric-operator auto-complete w3m goto-last-change goto-last-point magit-gerrit origami monokai-alt-theme counsel-gtags all-the-icons-ivy all-the-icons liberime imenu-list ivy-avy treemacs eshell-up save-visited-files org-pretty-tags go-mode yaml-imenu yaml-mode better-jumper folding bind-key cuda-mode demangle-mode modern-cpp-font-lock opencl-mode go smex projectile-ripgrep counsel use-package counsel-projectile swiper ivy-xref imenus magit git-timemachine fzf yasnippet undo-fu-session undo-fu rime which-key bbyac avy monokai-theme hungry-delete ivy))
  '(show-trailing-whitespace t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -622,3 +613,4 @@ Version 2017-09-01"
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(put 'downcase-region 'disabled nil)
