@@ -1,20 +1,21 @@
 # .bashrc
 
 # Source global definitions
-if [ -f /etc/bashrc ]; then
-	source /etc/bashrc
-fi
+[ -f /etc/bashrc ] && . /etc/bashrc
+
+[ -f ~/.bashrc-default ] && . ~/.bashrc-default
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
 
 # aliases
-source ~/.aliasrc
+[ -f ~/linux-config/.aliasrc ] && . ~/linux-config/.aliasrc
+
 # environment settings
-source ~/.pathrc
-source ~/.bashrc-default
+[ -f ~/linux-config/.pathrc ] && . ~/.pathrc
+
 # colorful shell
-source ~/.colorshellrc
+[ -f ~/linux-config/.colorshellrc ] && . ~/linux-config/.colorshellrc
 
 
 # unlimited bash history

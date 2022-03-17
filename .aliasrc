@@ -38,6 +38,7 @@ alias cpp='cd ~/develop/cpp-test'
 alias unreal='cd ~/develop/unrealEngine-release'
 
 # git alias
+alias gitremotes='git remote set-url origin git@github.com:5visvn/linux-config.git'
 alias gp='git pull -r'
 alias gf='git fetch --all'
 alias gb='git branch'
@@ -53,5 +54,4 @@ alias gdt='git difftool'
 alias gdts='git difftool --staged'
 
 # servers
-alias ss='ssh wws@47.98.133.22 -qt "tmux at -t 0"'
-
+alias ssss='ssh name@host -qt "tmux at -t 0"'
