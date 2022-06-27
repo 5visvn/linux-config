@@ -234,7 +234,9 @@ apps are not started from a shell."
 (display-time-mode 1)
 
 ;; scroll bar
-;; (scroll-bar-mode nil)
+(scroll-bar-mode -1)
+
+(set-cursor-color "white")
 
 (global-hl-line-mode t)
 ;; display line number
