@@ -156,6 +156,11 @@ apps are not started from a shell."
 (global-set-key (kbd "M-s s") 'counsel-projectile-rg)
 (global-set-key (kbd "M-s M-s") 'swiper-all-thing-at-point);; 'counsel-projectile-rg-thing-at-point)
 (global-set-key (kbd "M-s y") 'kill-new-thing-at-point)
+(define-key minibuffer-local-map (kbd "M-p") 'previous-complete-history-element)
+(define-key minibuffer-local-map (kbd "M-n") 'next-complete-history-element)
+(define-key minibuffer-local-map (kbd "<up>") 'previous-complete-history-element)
+(define-key minibuffer-local-map (kbd "<down>") 'next-complete-history-element)
+
 
 ;; key-bindings for file -------------------------------
 (global-set-key (kbd "M-z") 'switch-to-buffer)
@@ -259,6 +264,8 @@ apps are not started from a shell."
 (setq global-mark-ring-max 6)
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode)) ;; regarding .h as c++ file
 (global-undo-tree-mode)
+(setq undo-tree-auto-save-history t) ;; disable undo tree save to file
+(setq undo-tree-history-directory-alist '(("." . "~/.cache/undo-tree/")))
 
 ;; TODO: mode-line
 (setq-default mode-line-format
@@ -291,6 +298,9 @@ apps are not started from a shell."
                 ;; mode-line-end-spaces
                 ))
 
+
+;; extend kill-ring buffer size
+(setq kill-ring-max 200)
 
 ;; enable mouse in terminal
 (xterm-mouse-mode)
@@ -363,7 +373,8 @@ apps are not started from a shell."
 ;; (add-to-list 'nox-server-programs '((go-mode) . ((concat "/home/" user-login-name "/tools/go-language-server/bin/gopls"))))
 
 ;;;;  -------------------------C-CPP/C++----------------------
-(add-to-list 'exec-path (concat "/home/" user-login-name "/tools/clangd_12.0.0/bin/"))
+;; (add-to-list 'exec-path (concat "/home/" user-login-name "/tools/clangd_12.0.0/bin/"))
+(add-to-list 'exec-path "/opt/clang14-for-tng/bin/")
 
 ;; clang-format for c,c++
 (require 'cc-mode)
@@ -607,8 +618,8 @@ Version 2017-09-01"
  '(lsp-dired-mode t nil (lsp-dired))
  '(monokai-background "#000000")
  '(package-selected-packages
-   '(undo-tree csv-mode 2048-game rg cmake-mode ripgrep wide-column lsp-mode clang-format+ w32-browser xmind-org org-mind-map leetcode plantuml-mode org-bullets disaster electric-operator auto-complete w3m goto-last-change goto-last-point magit-gerrit origami monokai-alt-theme counsel-gtags all-the-icons-ivy all-the-icons liberime imenu-list ivy-avy treemacs eshell-up save-visited-files org-pretty-tags go-mode yaml-imenu yaml-mode better-jumper folding bind-key cuda-mode demangle-mode modern-cpp-font-lock opencl-mode go smex projectile-ripgrep counsel use-package counsel-projectile swiper ivy-xref imenus magit git-timemachine fzf yasnippet undo-fu-session undo-fu rime which-key bbyac avy monokai-theme hungry-delete ivy))
- '(show-trailing-whitespace t))
+   '(ialign ez-query-replace flycheck-clang-tidy undo-tree csv-mode 2048-game rg cmake-mode ripgrep wide-column lsp-mode clang-format+ w32-browser xmind-org org-mind-map leetcode plantuml-mode org-bullets disaster electric-operator auto-complete w3m goto-last-change goto-last-point magit-gerrit origami monokai-alt-theme counsel-gtags all-the-icons-ivy all-the-icons liberime imenu-list ivy-avy treemacs eshell-up save-visited-files org-pretty-tags go-mode yaml-imenu yaml-mode better-jumper folding bind-key cuda-mode demangle-mode modern-cpp-font-lock opencl-mode go smex projectile-ripgrep counsel use-package counsel-projectile swiper ivy-xref imenus magit git-timemachine fzf yasnippet undo-fu-session undo-fu rime which-key bbyac avy monokai-theme hungry-delete ivy))
+ '(show-trailing-whitespace nil)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -1,3 +1,4 @@
+#! /bin/bash
 DEFAULT="\[\033[0m\]"
 
 BLUE="\[\033[0;34m\]"
@@ -36,7 +37,7 @@ function parse_git_branch()
 }
 
 
-export PS1="\A $YELLOW\$(parse_git_branch) $LIGHT_RED\w $LIGHT_GREEN\$ $DEFAULT"
+export PS1="\D{%m/%d} \A $YELLOW\$(parse_git_branch) $LIGHT_RED\w $LIGHT_GREEN\$ $DEFAULT"
 
 
 # following is copy from "bash full of color" for backup
