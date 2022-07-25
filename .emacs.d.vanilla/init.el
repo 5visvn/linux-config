@@ -239,7 +239,7 @@ apps are not started from a shell."
 (display-time-mode 1)
 
 ;; scroll bar
-(scroll-bar-mode -1)
+;;(scroll-bar-mode -1)
 
 (set-cursor-color "white")
 
@@ -619,7 +619,7 @@ Version 2017-09-01"
  '(monokai-background "#000000")
  '(package-selected-packages
    '(ialign ez-query-replace flycheck-clang-tidy undo-tree csv-mode 2048-game rg cmake-mode ripgrep wide-column lsp-mode clang-format+ w32-browser xmind-org org-mind-map leetcode plantuml-mode org-bullets disaster electric-operator auto-complete w3m goto-last-change goto-last-point magit-gerrit origami monokai-alt-theme counsel-gtags all-the-icons-ivy all-the-icons liberime imenu-list ivy-avy treemacs eshell-up save-visited-files org-pretty-tags go-mode yaml-imenu yaml-mode better-jumper folding bind-key cuda-mode demangle-mode modern-cpp-font-lock opencl-mode go smex projectile-ripgrep counsel use-package counsel-projectile swiper ivy-xref imenus magit git-timemachine fzf yasnippet undo-fu-session undo-fu rime which-key bbyac avy monokai-theme hungry-delete ivy))
- '(show-trailing-whitespace nil)
+ '(show-trailing-whitespace nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
