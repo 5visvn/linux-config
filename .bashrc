@@ -12,7 +12,7 @@
 [ -f ~/linux-config/.aliasrc ] && . ~/linux-config/.aliasrc
 
 # environment settings
-[ -f ~/linux-config/.pathrc ] && . ~/.pathrc
+[ -f ~/.pathrc ] && . ~/.pathrc
 
 # colorful shell
 [ -f ~/linux-config/.colorshellrc ] && . ~/linux-config/.colorshellrc

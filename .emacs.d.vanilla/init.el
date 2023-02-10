@@ -28,6 +28,7 @@
                      plantuml-mode
                      undo-fu
                      use-package
+                     undo-tree
                      undo-fu-session
                      hungry-delete
                      ivy-avy
