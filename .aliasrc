@@ -36,6 +36,7 @@ alias rm='rm -I'
 # cd
 alias cpp='cd ~/develop/cpp-test'
 alias unreal='cd ~/develop/unrealEngine-release'
+alias cd..='cd ..'
 
 # git alias
 alias gitremotes='git remote set-url origin git@github.com:5visvn/linux-config.git'

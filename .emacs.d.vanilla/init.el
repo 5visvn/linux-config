@@ -41,6 +41,7 @@
                      ripgrep
                      ;;;; cpp
                      cmake-mode
+                     cmake-font-lock
                      with-editor
                      ;; cuda-mode
                      imenu-list
@@ -107,6 +108,7 @@ apps are not started from a shell."
 
 ;; key-bindings for editing -------------------------------
 (global-set-key (kbd "C-h") 'hungry-delete-backward)
+(global-set-key (kbd "C-t") 'upcase-char)
 ;; (global-set-key (kbd "C-h") 'backward-delete-char-untabify)
 (global-set-key (kbd "M-h") 'backward-kill-word)
 ;;(global-set-key (kbd "C-d") 'hungry-delete-forward)
@@ -196,7 +198,8 @@ apps are not started from a shell."
 (global-set-key (kbd "M-g d") 'magit-diff)
 (global-set-key (kbd "M-g s") 'magit-status)
 (global-set-key (kbd "M-g l") 'magit-log)
-(global-set-key (kbd "M-g m") 'smerge-keep-mine)
+(global-set-key (kbd "M-g m") 'smerge-keep-upper) ;; should abandoned as smerge-keep-mine is not supported any more
+(global-set-key (kbd "M-g u") 'smerge-keep-upper)
 (global-set-key (kbd "M-g o") 'smerge-keep-other)
 
 ;; key-bindings for term -------------------------------
@@ -387,8 +390,15 @@ apps are not started from a shell."
 ;; spell/typo check
 (require 'cc-vars)
 (add-hook 'c-mode-common-hook 'flyspell-prog-mode)
+;; cmake-format
+(require 'cmake-mode)
+(define-key cmake-mode-map (kbd "C-x C-s")
+  '(lambda ()
+     (interactive)
+     (save-buffer)
+     (shell-command (concat "cmake-format " buffer-file-name " -o " buffer-file-name))
+     ))
 
-;; (add-to-list 'exec-path "/opt/clang13-for-tng/bin/")
 (add-to-list 'nox-server-programs '((c++-mode c-mode) . ("clangd" "--background-index=false")))
 (dolist (hook (list
                ;; 'js-mode-hook
@@ -541,9 +551,9 @@ apps are not started from a shell."
 ;; abbrev
 (define-abbrev-table 'global-abbrev-table
   `(
-    ("db" ,(concat "pm_log.log_error(\"[1;37;42m" user-login-name ": [%str][0;39;49m\\n\");"))
-    ("dx" ,(concat "pm_log.log_error() << \"[1;37;42m" user-login-name ": str [\" << var << \"][0;39;49m\" << std::endl;"))
-    ("td" ,(concat "// TODO: " user-login-name ":"))
+    ("wdb" ,(concat "pm_log.log_error(\"[1;37;42m" user-login-name ": [%str][0;39;49m\\n\");"))
+    ("wdx" ,(concat "pm_log.log_error() << \"[1;37;42m" user-login-name ": str [\" << var << \"][0;39;49m\" << std::endl;"))
+    ("wtd" ,(concat "// TODO: " user-login-name ":"))
     ))
 (abbrev-mode 1)
 
@@ -558,33 +568,10 @@ apps are not started from a shell."
 
 
 ;; copy file path
-(defun xah-copy-file-path (&optional @dir-path-only-p)
-  "Copy the current buffer's file path or dired path to `kill-ring'.
-Result is full path.
-If `universal-argument' is called first, copy only the dir path.
-If in dired, copy the file/dir cursor is on, or marked files.
-If a buffer is not file and not dired, copy value of `default-directory' (which is usually the “current” dir when that buffer was created)
-URL `http://ergoemacs.org/emacs/emacs_copy_file_path.html'
-Version 2017-09-01"
-  (interactive "P")
-  (let (($fpath
-         (if (string-equal major-mode 'dired-mode)
-             (progn
-               (let (($result (mapconcat 'identity (dired-get-marked-files) "\n")))
-                 (if (equal (length $result) 0)
-                     (progn default-directory )
-                   (progn $result))))
-           (if (buffer-file-name)
-               (buffer-file-name)
-             (expand-file-name default-directory)))))
-    (kill-new
-     (if @dir-path-only-p
-         (progn
-           (message "Directory path copied: 「%s」" (file-name-directory $fpath))
-           (file-name-directory $fpath))
-       (progn
-         (message "File path copied: 「%s」" $fpath)
-         $fpath )))))
+(defun get-file-path ()
+  (interactive)
+  (message "File:[ %s ]" buffer-file-name)
+  )
 
 ;; treemacs customize
 (setq treemacs-position 'right)
@@ -619,7 +606,7 @@ Version 2017-09-01"
  '(lsp-dired-mode t nil (lsp-dired))
  '(monokai-background "#000000")
  '(package-selected-packages
-   '(ialign ez-query-replace flycheck-clang-tidy undo-tree csv-mode 2048-game rg cmake-mode ripgrep wide-column lsp-mode clang-format+ w32-browser xmind-org org-mind-map leetcode plantuml-mode org-bullets disaster electric-operator auto-complete w3m goto-last-change goto-last-point magit-gerrit origami monokai-alt-theme counsel-gtags all-the-icons-ivy all-the-icons liberime imenu-list ivy-avy treemacs eshell-up save-visited-files org-pretty-tags go-mode yaml-imenu yaml-mode better-jumper folding bind-key cuda-mode demangle-mode modern-cpp-font-lock opencl-mode go smex projectile-ripgrep counsel use-package counsel-projectile swiper ivy-xref imenus magit git-timemachine fzf yasnippet undo-fu-session undo-fu rime which-key bbyac avy monokai-theme hungry-delete ivy))
+   '(cmake-ide cmake-font-lock cpputils-cmake gtags-mode ggtags ialign ez-query-replace flycheck-clang-tidy undo-tree csv-mode 2048-game rg cmake-mode ripgrep wide-column lsp-mode clang-format+ w32-browser xmind-org org-mind-map leetcode plantuml-mode org-bullets disaster electric-operator auto-complete w3m goto-last-change goto-last-point magit-gerrit origami monokai-alt-theme counsel-gtags all-the-icons-ivy all-the-icons liberime imenu-list ivy-avy treemacs eshell-up save-visited-files org-pretty-tags go-mode yaml-imenu yaml-mode better-jumper folding bind-key cuda-mode demangle-mode modern-cpp-font-lock opencl-mode go smex projectile-ripgrep counsel use-package counsel-projectile swiper ivy-xref imenus magit git-timemachine fzf yasnippet undo-fu-session undo-fu rime which-key bbyac avy monokai-theme hungry-delete ivy))
  '(show-trailing-whitespace nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
