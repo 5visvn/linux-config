@@ -19,6 +19,6 @@ ln -sf ~/linux-config/.gitconfig ~/.gitconfig
 ln -sf ~/linux-config/.gitignore ~/.gitignore
 
 git clone https://github.com/junegunn/fzf ~/.fzf
-~/.fzf/install.sh
+~/.fzf/install
 
 
