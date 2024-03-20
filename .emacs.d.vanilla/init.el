@@ -1,11 +1,14 @@
 (package-initialize)
-(setq package-archives '(("gnu" . "http://mirrors.ustc.edu.cn/elpa/gnu/")
-                         ("melpa" . "http://mirrors.ustc.edu.cn/elpa/melpa/")
-                         ("melpa-stable" . "http://mirrors.ustc.edu.cn/elpa/melpa-stable/")
-                         ("org" . "http://mirrors.ustc.edu.cn/elpa/org/")))
+(setq package-archives '(("gnu" . "https://mirrors.ustc.edu.cn/elpa/gnu/")
+                         ("melpa" . "https://mirrors.ustc.edu.cn/elpa/melpa/")
+                         ("nongnu" . "https://mirrors.ustc.edu.cn/elpa/nongnu/")))
+;; (setq package-archives '(("gnu" . "http://mirrors.ustc.edu.cn/elpa/gnu/")
+;;                          ("melpa" . "http://mirrors.ustc.edu.cn/elpa/melpa/")
+;;                          ("melpa-stable" . "http://mirrors.ustc.edu.cn/elpa/melpa-stable/")
+;;                          ("org" . "http://mirrors.ustc.edu.cn/elpa/org/")))
 
 ;; packages not in elpa
-;; (add-to-list 'load-path (expand-file-name "~/elisp/nox"))
+;; (add-to-list 'load-path (expand-file-name "~/elisp/acm-terminal"))
 (let ((default-directory  "~/elisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 ;; common lisp
@@ -17,7 +20,7 @@
                      winum
                      save-visited-files
                      eshell-up
-                     company
+                     company  ;;code completion
                      slime
                      ;; treemacs
                      all-the-icons
@@ -83,9 +86,21 @@
 
 ;; TODO: download github packages automatically
 (setq github-package-list '((nox . "lazycat")
+                            (lsp-bridge . "lazycat")
+                            (acm-terminal . "twlz0ne")
+                            (popon . akib) ;; codeberg
                             ))
 (dolist (package github-package-list)
   (require (car package)))
+
+
+;; (unless (package-installed-p 'yasnippet)
+;;   (package-install 'yasnippet))
+;; (quelpa '(lsp-bridge :fetcher github
+;;                      :repo "manateelazycat/lsp-bridge"
+;;                      :files ("*.el" "*.py" "acm" "core" "langserver"
+;;                              "multiserver" "resources")))
+
 
 ;;; exec path from shell path
 (defun set-exec-path-from-shell-PATH ()
@@ -167,12 +182,15 @@ apps are not started from a shell."
 
 ;; key-bindings for file -------------------------------
 (global-set-key (kbd "M-z") 'switch-to-buffer)
+(global-set-key (kbd "M-n") 'switch-to-next-buffer)
+(global-set-key (kbd "M-p") 'switch-to-prev-buffer)
 ;; (global-set-key (kbd "C-c b") 'switch-to-buffer)
 (global-set-key (kbd "C-c C-f") 'find-file)
 (global-set-key (kbd "C-c p f") 'projectile--find-file)
 (global-set-key (kbd "C-c f") 'fzf-find-file)
 (global-set-key (kbd "C-c p d") 'projectile-find-dir)
 (global-set-key (kbd "C-c p i") 'projectile-invalidate-cache)
+(global-set-key (kbd "C-c p s") 'project-query-replace-regexp)
 ;; (global-set-key (kbd "M-p") 'previous-buffer)
 ;; (global-set-key (kbd "M-n") 'next-buffer)
 (global-set-key (kbd "M-g a") 'ff-get-other-file)
@@ -190,7 +208,7 @@ apps are not started from a shell."
 (global-set-key (kbd "M-0") 'treemacs-select-window)
 (global-set-key (kbd "C-x C-o") 'other-window)
 (global-set-key (kbd "C-c o") 'other-window)
-(global-set-key (kbd "C-r") 'ivy-resume)
+(global-set-key (kbd "C-r") 'projectile-recentf)
 
 ;; key-bindings for magit -------------------------------
 (global-set-key (kbd "M-g f") 'magit-pull)
@@ -282,7 +300,7 @@ apps are not started from a shell."
                 mode-line-modified
                 "  "
                 ;; mode-line-remote
-                ;; mode-line-frame-idejtification
+                mode-line-frame-idejtification
                 mode-line-buffer-identification
                 "\t  "
                 mode-line-position
@@ -383,17 +401,20 @@ apps are not started from a shell."
 ;; clang-format for c,c++
 (require 'cc-mode)
 (define-key c-mode-base-map (kbd "C-x C-s")
-  '(lambda ()
+  (lambda ()
      (interactive)
      (clang-format-buffer)
      (save-buffer)))
 ;; spell/typo check
 (require 'cc-vars)
 (add-hook 'c-mode-common-hook 'flyspell-prog-mode)
+;; spell skip
+;; (add-to-list 'ispell-alternate-dictionary "Copyright")
+
 ;; cmake-format
 (require 'cmake-mode)
 (define-key cmake-mode-map (kbd "C-x C-s")
-  '(lambda ()
+  (lambda ()
      (interactive)
      (save-buffer)
      (shell-command (concat "cmake-format " buffer-file-name " -o " buffer-file-name))
@@ -412,6 +433,13 @@ apps are not started from a shell."
                ))
   (add-hook hook 'nox-ensure))
 
+;; lsp-bridge for code completion
+;; (add-hook 'emacs-startup-hook
+;;           (lambda ()
+;;             (yas-global-mode 1)
+;;             (global-lsp-bridge-mode)
+;;             ))
+
 ;; find other file for hh and cc
 (setq cc-search-directories '("."
                               ".."
@@ -424,7 +452,7 @@ apps are not started from a shell."
                               ))
 
 
-;; lsp-mode
+;; lsp-mode for auto completion
 ;; skip background indexing when project is huge
 
 ;; (lsp-mode)
@@ -432,8 +460,8 @@ apps are not started from a shell."
 ;; (add-hook 'c++-mode-hook 'lsp-mode)
 
 
-;;(add-hook 'minibuffer-setup-hook
-                         ;;(lambda () (setq truncate-lines nil)))
+(add-hook 'minibuffer-setup-hook
+                         (lambda () (setq truncate-lines nil)))
 
 
 ;;; org-mode customize
@@ -453,10 +481,23 @@ apps are not started from a shell."
 (add-hook 'org-mode-hook
           (lambda ()
             (org-bullets-mode 1)))
+(setq org-log-done 'time)
+(setq org-todo-keywords
+      '((sequence "TODO" "ONGOING(!)" "REVIEW" "|" "DONE(!)")))
+(setq org-todo-keyword-faces
+      '(("TODO" . org-warning)
+        ("ONGOING" . "yellow")
+        ("REVIEW" . "blue")
+        ("DONE" . "green")))
+(setq org-startup-folded 'fold)
+
+;;; csv mode
+(add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . csv-align-mode))
+(add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . csv-mode))
 
 
 ;; tag file
-;;(setq tags-file-name (concat "/tmp/" user-login-name "/esapc/gtags"))
+;;(setq tags-file-name (concat "/tmp/" user-login-name "/espc/gtags"))
 
 
 ;; projectile use ivy
@@ -480,7 +521,7 @@ apps are not started from a shell."
 
 ;;;; company
 (add-hook 'after-init-hook 'global-company-mode)
-(global-company-mode t)
+;; (global-company-mode t)
 (setq company-idle-delay 0
    company-minimum-prefix-length 1
    company-require-match nil
@@ -524,7 +565,7 @@ apps are not started from a shell."
 ;; history
 ;; (save-visited-files-mode t)
 (save-place-mode t)
-
+(recentf-mode t)
 
 ;; proectile
 (projectile-mode 1)
@@ -594,6 +635,15 @@ apps are not started from a shell."
   )
 
 
+
+
+;;;; DO NOT TOUCH FOLLOWING CONFIGURATIONS WHICH ARE GENERATED BY EMACS
+
+
+
+
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -602,11 +652,11 @@ apps are not started from a shell."
  '(custom-enabled-themes '(monokai-alt))
  '(custom-safe-themes
    '("ebd9cbb62c7fd465af6618ac6056d1a12fa77e26b3d3354d5fbd96bad265e9f8" "4b4a0f6ea69ec4cbbd847b34937fb78b72a0151cb185038889e22fe4bf88889f" "d9646b131c4aa37f01f909fbdd5a9099389518eb68f25277ed19ba99adeb7279" "0231f20341414f4091fc8ea36f28fa1447a4bc62923565af83cfb89a6a1e7d4a" "46b2d7d5ab1ee639f81bde99fcd69eb6b53c09f7e54051a591288650c29135b0" "f3ab34b145c3b2a0f3a570ddff8fabb92dafc7679ac19444c31058ac305275e1" default))
- '(global-display-line-numbers-mode t)
+ '(global-display-line-numbers-mode nil)
  '(lsp-dired-mode t nil (lsp-dired))
  '(monokai-background "#000000")
  '(package-selected-packages
-   '(cmake-ide cmake-font-lock cpputils-cmake gtags-mode ggtags ialign ez-query-replace flycheck-clang-tidy undo-tree csv-mode 2048-game rg cmake-mode ripgrep wide-column lsp-mode clang-format+ w32-browser xmind-org org-mind-map leetcode plantuml-mode org-bullets disaster electric-operator auto-complete w3m goto-last-change goto-last-point magit-gerrit origami monokai-alt-theme counsel-gtags all-the-icons-ivy all-the-icons liberime imenu-list ivy-avy treemacs eshell-up save-visited-files org-pretty-tags go-mode yaml-imenu yaml-mode better-jumper folding bind-key cuda-mode demangle-mode modern-cpp-font-lock opencl-mode go smex projectile-ripgrep counsel use-package counsel-projectile swiper ivy-xref imenus magit git-timemachine fzf yasnippet undo-fu-session undo-fu rime which-key bbyac avy monokai-theme hungry-delete ivy))
+   '(logview csv jira-markup-mode org-jira cmake-ide cmake-font-lock cpputils-cmake gtags-mode ggtags ialign ez-query-replace flycheck-clang-tidy undo-tree csv-mode 2048-game rg cmake-mode ripgrep wide-column lsp-mode clang-format+ w32-browser xmind-org org-mind-map leetcode plantuml-mode org-bullets disaster electric-operator auto-complete w3m goto-last-change goto-last-point magit-gerrit origami monokai-alt-theme counsel-gtags all-the-icons-ivy all-the-icons liberime imenu-list ivy-avy treemacs eshell-up save-visited-files org-pretty-tags go-mode yaml-imenu yaml-mode better-jumper folding bind-key cuda-mode demangle-mode modern-cpp-font-lock opencl-mode go smex projectile-ripgrep counsel use-package counsel-projectile swiper ivy-xref imenus magit git-timemachine fzf yasnippet undo-fu-session undo-fu rime which-key bbyac avy monokai-theme hungry-delete ivy))
  '(show-trailing-whitespace nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -615,3 +665,4 @@ apps are not started from a shell."
  ;; If there is more than one, they won't work right.
  )
 (put 'downcase-region 'disabled nil)
+(put 'narrow-to-page 'disabled nil)
